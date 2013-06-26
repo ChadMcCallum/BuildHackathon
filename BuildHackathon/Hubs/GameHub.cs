@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using BuildHackathon.State;
+﻿using System.Collections.Generic;
+using BuildHackathon.Shared;
 using Microsoft.AspNet.SignalR;
 
 namespace BuildHackathon.Hubs

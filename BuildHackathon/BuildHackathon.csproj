@@ -168,7 +168,6 @@
     </Compile>
     <Compile Include="Hubs\GameHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="State\Game.cs" />
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +197,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuildHackathon.Shared\BuildHackathon.Shared.csproj">
+      <Project>{48F8E9E5-4A43-4F3D-B76B-4890083EC69D}</Project>
+      <Name>BuildHackathon.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
