@@ -23,7 +23,7 @@ namespace BuildHackathon
 
             var connectionString = "Endpoint=sb://buildhackathon.servicebus.windows.net/;SharedSecretIssuer=owner;SharedSecretValue=8LFP/KKPxhqrmjPUMYKiMRQnCoccHQkXD1mp4WoCF/g=";
             GlobalHost.DependencyResolver.UseServiceBus(connectionString, "BuildHackathon");
-            RouteTable.Routes.MapHubs("/signalr", new HubConfiguration());
+            RouteTable.Routes.MapHubs("/signalr", new HubConfiguration { EnableDetailedErrors = true });
         }
     }
 }

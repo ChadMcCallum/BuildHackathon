@@ -9,6 +9,13 @@ namespace BuildHackathon.Shared
     {
         public Guid ID { get; set; }
         public string QRCodeImage { get; set; }
+        public Team BlueTeam { get; set; }
+        public Team RedTeam { get; set; }
+
+        public int TotalPlayers
+        {
+            get { return this.RedTeam.Players.Count + this.BlueTeam.Players.Count; }
+        }
 
         public Game()
         {
@@ -18,6 +25,20 @@ namespace BuildHackathon.Shared
                                              Uri.EscapeDataString(
                                                  "http://buildhackathon.cloudapp.net/client.html?id=" +
                                                  this.ID.ToString()));
+            BlueTeam = new Team() { Name = "Blue" };
+            RedTeam = new Team() {Name = "Red"};
+        }
+
+        public void AddPlayerToTeam(Player player)
+        {
+            if (BlueTeam.Players.Count > RedTeam.Players.Count)
+            {
+                BlueTeam.AddPlayer(player);
+            }
+            else
+            {
+                RedTeam.AddPlayer(player);
+            }
         }
     }
 }

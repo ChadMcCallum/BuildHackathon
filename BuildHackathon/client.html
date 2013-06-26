@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+    <!--<link rel="stylesheet" href="www/css/metro/jquery.mobile.metro.theme.css"/>-->
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-1.1.2.min.js"></script>
+    <script src="/Scripts/client.js"></script>
+    <script src="/signalr/hubs"></script>
+    <style>
+        button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div data-role="page" id="start">
+
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <!-- /header -->
+
+        <div data-role="content">
+            <p>Enter your twitter handle:</p>
+            <input type='text' id='twitterName' />
+            <button id='start-playing'>Start Playing!</button>
+        </div>
+        <!-- /content -->
+
+    </div>
+    <!-- /page -->
+    <div data-role="page" id="wait-round">
+
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <!-- /header -->
+
+        <div data-role="content">
+            <p>Waiting for next round to start...</p>
+        </div>
+        <!-- /content -->
+
+    </div>
+    <div data-role="page" id="guess">
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <div data-role="content">
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+                <div class="ui-block-b">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+                <div class="ui-block-b">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+                <div class="ui-block-b">
+                    <button class='guess'>
+                        <img src="https://si0.twimg.com/profile_images/344513261565985274/0d75ac6be50b71e8d24cad80f6548cd6.jpeg" style="width: 75px; vertical-align: middle;" />
+                        @ChadEmm
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <center>Your score: 1 - Your Team's Score: 10</center>
+        </div>
+
+    </div>
+    <div data-role="page" id="waiting">
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <div data-role="content">
+            <p>Waiting for everyone else...</p>
+        </div>
+        <div data-role="footer"></div>
+    </div>
+    <div data-role="page" id="correct">
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <div data-role="content">
+            <p>YOU WERE RIGHT!!!</p>
+        </div>
+        <div data-role="footer">
+        </div>
+
+    </div>
+
+    <div data-role="page" id="fail">
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <div data-role="content">
+        </div>
+        <div data-role="footer">
+        </div>
+
+    </div>
+
+    <div data-role="page" id="Div1">
+        <div data-role="header">
+            <h1>Who Tweet Dat?</h1>
+        </div>
+        <div data-role="content">
+        </div>
+        <div data-role="footer">
+        </div>
+
+    </div>
+
+</body>
+</html>

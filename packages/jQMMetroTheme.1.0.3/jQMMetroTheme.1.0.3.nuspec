@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>jQMMetroTheme</id>
+    <version>1.0.3</version>
+    <title />
+    <authors>Sergey Grebnov</authors>
+    <owners>Sergey Grebnov</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>http://sgrebnov.github.com/jqmobile-metro-theme/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides Metro user interface for web pages using jQuery Mobile on Windows Phone 7.5.</description>
+  </metadata>
+</package>
