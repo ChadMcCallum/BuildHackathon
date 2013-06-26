@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using BuildHackathon.Shared;
+using System.Net.Http;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,37 +47,47 @@ namespace BuildHackathon.Host
 			// Don't allow them to click again while we process.
 			btnStartGame.IsEnabled = false;
 
-			// If we have not started a game yet.
-			if (btnStartGame.Tag == null)
+			try
 			{
-				btnStartGame.Content = "Connecting...";
+				// If we have not started a game yet.
+				if (btnStartGame.Tag == null)
+				{
+					btnStartGame.Content = "Connecting...";
 
-				// Connect to our Azure host.
-				var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
-				var hubProxy = hubConnection.CreateHubProxy("GameHub");
-				await hubConnection.Start();
+					// Connect to our Azure host.
+					var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
+					var hubProxy = hubConnection.CreateHubProxy("GameHub");
+					await hubConnection.Start();
 
-				// Get the game object back from Azure.
-				GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
+					// Get the game object back from Azure.
+					GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
 
-				btnStartGame.Content = "Kill Game";
-				btnStartGame.Tag = "Playing";
+					btnStartGame.Content = "Kill Game";
+					btnStartGame.Tag = "Playing";
 
-				NavigateToGamePage();
+					NavigateToGamePage();
+				}
+				// Else a game is currently being played.
+				else
+				{
+					btnStartGame.Content = "Disconnecting...";
+
+					GameData.Game = null;
+
+					btnStartGame.Content = "Start Game";
+					btnStartGame.Tag = null;
+				}
 			}
-			// Else a game is currently being played.
-			else
+			catch (HttpRequestException)
 			{
-				btnStartGame.Content = "Disconnecting...";
-
-				GameData.Game = null;
-
-				btnStartGame.Content = "Start Game";
+				btnStartGame.Content = "Could not connect :( Try again!";
 				btnStartGame.Tag = null;
 			}
-
-			// Allow them to click button again now that we are done processing.
-			btnStartGame.IsEnabled = true;
+			finally
+			{
+				// Allow them to click button again now that we are done processing.
+				btnStartGame.IsEnabled = true;
+			}
 		}
 
 		private void btnGoBackToCurrentGame_Tapped(object sender, TappedRoutedEventArgs e)

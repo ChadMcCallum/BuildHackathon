@@ -28,6 +28,27 @@ namespace BuildHackathon.Host
 			this.DataContext = this;
 		}
 
+		public List<ClientPlayer> Team1Players 
+		{ 
+			get 
+			{
+				var list = new List<ClientPlayer>();
+				foreach (var player in GameData.Game.BlueTeam.Players)
+					list.Add(new ClientPlayer(player));
+				return list;
+			} 
+		}
+		public List<ClientPlayer> Team2Players
+		{
+			get
+			{
+				var list = new List<ClientPlayer>();
+				foreach (var player in GameData.Game.RedTeam.Players)
+					list.Add(new ClientPlayer(player));
+				return list;
+			}
+		}
+
 		/// <summary>
 		/// Populates the page with content passed during navigation.  Any saved state is also
 		/// provided when recreating a page from a prior session.

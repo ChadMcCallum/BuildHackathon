@@ -17,5 +17,7 @@ namespace BuildHackathon.Shared
         
         [JsonIgnore]
         public Team Team { get; set; }
+
+		public int Score { get; set; }
     }
 }

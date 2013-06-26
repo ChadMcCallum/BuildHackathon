@@ -22,5 +22,18 @@ namespace BuildHackathon.Shared
         {
             this.Players.Remove(player);
         }
+
+		public int Score
+		{
+			get
+			{
+				int score = 0;
+				foreach (var player in Players)
+				{
+					score += player.Score;
+				}
+				return score;
+			}
+		}
     }
 }

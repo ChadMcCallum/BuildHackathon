@@ -11,8 +11,11 @@ namespace BuildHackathon.Host
 	{
 		public static Game Game { get; set; }
 
-		public event EventHandler OnNewTweet = delegate { };
-		public event EventHandler OnPlayerConnected = delegate { };
-		public event EventHandler OnPlayerDisconnected = delegate { };
+		public static event EventHandler OnNewTweet = delegate { };
+		public static event EventHandler OnPlayerConnected = delegate { };
+		public static event EventHandler OnPlayerDisconnected = delegate { };
+
+		public static event EventHandler OnGameDataUpdated = delegate { };
+		public static void UpdateGameData() { OnGameDataUpdated(null, EventArgs.Empty); }
 	}
 }
