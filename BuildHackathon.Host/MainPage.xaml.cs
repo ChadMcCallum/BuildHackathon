@@ -40,8 +40,8 @@ namespace BuildHackathon.Host
 		private async void btnStartGame_Click(object sender, RoutedEventArgs e)
 		{
 			// Connect to our Azure host.
-			var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/");
-			var hubProxy = hubConnection.CreateHubProxy("game");
+			var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
+			var hubProxy = hubConnection.CreateHubProxy("GameHub");
 			await hubConnection.Start();
 			
 			// Get the game object back from Azure.
