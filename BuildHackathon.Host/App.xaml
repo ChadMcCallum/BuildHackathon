@@ -13,8 +13,9 @@
                     Required by Visual Studio project and item templates
                  -->
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+			</ResourceDictionary.MergedDictionaries>
 
+			<x:String x:Key="AppName">Who Tweet Dat?</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
