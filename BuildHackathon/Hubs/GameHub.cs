@@ -56,7 +56,8 @@ namespace BuildHackathon.Hubs
             {
                 var player = new Player(Context.ConnectionId) { Name = name };
                 game.AddPlayer(player);
-                if (game.Game.TotalPlayers > 2) game.Start();
+                //if (game.Game.TotalPlayers > 2) 
+                    game.Start();
                 return player.Team.Name;
             }
             throw new Exception("Game doesn't exist");

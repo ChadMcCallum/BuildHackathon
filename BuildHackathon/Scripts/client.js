@@ -1,7 +1,7 @@
 ﻿$().ready(function () {
     window.hubProxy = $.connection.gameHub;
     hubProxy.client.NewQuestion = function(question) {
-
+        $.mobile.changePage($('#guess'));
     };
     $.connection.hub.start().done(function() { alert("Connected!"); });
 

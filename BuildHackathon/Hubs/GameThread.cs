@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using BuildHackathon.Shared;
 using Microsoft.AspNet.SignalR;
 using TweetSharp;
@@ -48,7 +49,12 @@ namespace BuildHackathon.Hubs
                             new Player("") { ImageURL = randomTweet.User.ProfileImageUrl, Name = randomTweet.User.ScreenName }
                         }
                 };
-            _hub.Clients.All.NewQuestion(question);
+            var timer = new Timer(this.SendQuestion, question, 2000, Timeout.Infinite);
+        }
+
+        private void SendQuestion(object obj)
+        {
+            _hub.Clients.All.NewQuestion(obj as Question);
         }
 
         public void AddPlayer(Player player)
