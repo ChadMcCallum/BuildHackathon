@@ -46,6 +46,7 @@ namespace BuildHackathon.Hubs
         public string JoinGame(Guid id, string name)
         {
             var game = _games.FirstOrDefault(g => g.Game.ID == id);
+            //take this out later
             if (game == null)
             {
                 var gamestate = CreateGame();
@@ -56,13 +57,11 @@ namespace BuildHackathon.Hubs
             {
                 var player = new Player(Context.ConnectionId) { Name = name };
                 game.AddPlayer(player);
-                //if (game.Game.TotalPlayers > 2) 
+                if (game.Game.TotalPlayers > 2) 
                     game.Start();
                 return player.Team.Name;
             }
             throw new Exception("Game doesn't exist");
         }
-
-
     }
 }
