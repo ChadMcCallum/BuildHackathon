@@ -38,6 +38,20 @@ namespace BuildHackathon.Host
 
 		public bool GameIsNull { get { return GameData.Game == null; } }
 
+		private void UpdateUI()
+		{
+			if (GameIsNull)
+			{
+				btnStartGame.Content = "Start Game";
+			}
+			else
+			{
+				btnStartGame.Content = "Back To Current Game";
+			}
+
+			SendPropertyChanged("GameIsNull");
+		}
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -51,14 +65,7 @@ namespace BuildHackathon.Host
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-			if (GameIsNull)
-			{
-				btnStartGame.Content = "Start Game";
-			}
-			else
-			{
-				btnStartGame.Content = "Kill Game";
-			}
+			UpdateUI();
         }
 
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
@@ -81,34 +88,24 @@ namespace BuildHackathon.Host
 					// Get the game object back from Azure.
 					//GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
 GameData.Game = new Game();
-					btnStartGame.Content = "Kill Game";
-					btnStartGame.Tag = "Playing";
 InsertTestData();
-					NavigateToGamePage();
-				}
-				// Else a game is currently being played.
-				else
-				{
-					btnStartGame.Content = "Disconnecting...";
-
-					GameData.Game = null;
-
-					btnStartGame.Content = "Start Game";
-					btnStartGame.Tag = null;
 				}
 			}
 			catch (HttpRequestException)
 			{
 				btnStartGame.Content = "Could not connect :( Try again!";
-				btnStartGame.Tag = null;
+				return;
 			}
 			finally
 			{
 				// Allow them to click button again now that we are done processing.
 				btnStartGame.IsEnabled = true;
 
+				// Update button's text.
 				SendPropertyChanged("GameIsNull");
 			}
+
+			NavigateToGamePage();
 		}
 
 		private void InsertTestData()
@@ -123,16 +120,17 @@ InsertTestData();
 			GameData.Game.BlueTeam.AddPlayer(player);
 		}
 
-		private void btnGoBackToCurrentGame_Tapped(object sender, TappedRoutedEventArgs e)
-		{
-			NavigateToGamePage();
-		}
-
 		private void NavigateToGamePage()
 		{
 			// Navigate to the game page.
 			if (this.Frame.CurrentSourcePageType != typeof(CurrentGamePage))
 				this.Frame.Navigate(typeof(CurrentGamePage));
+		}
+
+		private void btnEndGame_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			GameData.Game = null;
+			UpdateUI();
 		}
     }
 }
