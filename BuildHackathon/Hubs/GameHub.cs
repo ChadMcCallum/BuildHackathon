@@ -9,7 +9,7 @@ namespace BuildHackathon.Hubs
     public class GameHub : Hub
     {
         private static List<GameThread> _games;
-        private static List<Player> _players; 
+        private static List<Player> _players;
 
         public GameHub()
         {
@@ -29,6 +29,14 @@ namespace BuildHackathon.Hubs
             if (player != null)
             {
                 player.Team.RemovePlayer(player);
+                var thread = _games.FirstOrDefault(p => p.Game.ID == player.Game.ID);
+                if (thread != null)
+                {
+                    if (thread.Game.TotalPlayers < 2)
+                    {
+                        thread.EndGame();
+                    }
+                }
             }
             return base.OnDisconnected();
         }
@@ -43,7 +51,7 @@ namespace BuildHackathon.Hubs
         }
 
         //client methods
-        public string JoinGame(Guid id, string name)
+        public string JoinGame(string id, string name)
         {
             var game = _games.FirstOrDefault(g => g.Game.ID == id);
             //take this out later
@@ -58,7 +66,7 @@ namespace BuildHackathon.Hubs
                 var player = new Player(Context.ConnectionId) { Name = name };
                 _players.Add(player);
                 game.AddPlayer(player);
-                if (game.Game.TotalPlayers >= 2 && !game.IsStarted) 
+                if (game.Game.TotalPlayers >= 2 && !game.IsStarted)
                     game.Start();
                 return player.Team.Name;
             }

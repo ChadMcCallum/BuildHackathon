@@ -18,6 +18,7 @@
             }
             lastRow.append(button);
         });
+        $('#buttons').trigger('create');
         
         $.mobile.changePage($('#guess'));
     };
@@ -29,6 +30,10 @@
     };
     hubProxy.client.Wrong = function() {
         $.mobile.changePage($('#fail'));
+    };
+    hubProxy.client.EndGame = function (msg) {
+        $('#game-over-message').html("<p>" + msg + "</p>");
+        $.mobile.changePage($('#gameover'));
     };
 
     $.connection.hub.start().done(function () {

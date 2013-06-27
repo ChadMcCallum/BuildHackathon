@@ -7,7 +7,7 @@ namespace BuildHackathon.Shared
 {
     public class Game
     {
-        public Guid ID { get; set; }
+        public string ID { get; set; }
         public string QRCodeImage { get; set; }
         public Team BlueTeam { get; set; }
         public Team RedTeam { get; set; }
@@ -19,7 +19,7 @@ namespace BuildHackathon.Shared
             get { return this.RedTeam.Players.Count + this.BlueTeam.Players.Count; }
         }
 
-        public Game(Guid id)
+        public Game(string id)
         {
             this.ID = id;
             this.QRCodeImage = string.Format("http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={0}&chld=H|0)",

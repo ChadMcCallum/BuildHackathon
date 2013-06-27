@@ -20,7 +20,7 @@ namespace BuildHackathon.Hubs
             _random = new Random();
             IsStarted = false;
             _hub = context;
-            this.Game = new Game(Guid.NewGuid());
+            this.Game = new Game(Guid.NewGuid().ToString());
             _service = new TwitterService("vCBYBvYAdRrgWs5z0zmD1A", "eHqhut7IVR4aUWlgBwuURl3QssL7ASf7hNIi3AovjY");
             _service.AuthenticateWith("68329856-dHYH7dgh85Qkiv7vaNjoScNDTngJtNrjdH8JCLcvt", "KFtWesqC94jxkgSVYrpMlg4IKIcitmJF7MQW0b5Q");
 
@@ -67,7 +67,7 @@ namespace BuildHackathon.Hubs
                 };
             SetPlayerOptions(question, user);
             this.Game.SetQuestion(question);
-            _hub.Clients.All.NewQuestion(question);
+            _hub.Clients.Group(Game.ID).NewQuestion(question);
             //have 15 seconds to answer
             this._currentQuestionTimer = new Timer(QuestionTimeout, null, 15000, Timeout.Infinite);
         }
@@ -127,7 +127,7 @@ namespace BuildHackathon.Hubs
             }
 
             //set timer to next question
-            new Timer(GetNewQuestion, null, 5000, Timeout.Infinite);
+            _currentQuestionTimer = new Timer(GetNewQuestion, null, 5000, Timeout.Infinite);
         }
 
         public void AddPlayer(Player player)
@@ -139,6 +139,7 @@ namespace BuildHackathon.Hubs
                 player.ImageURL = user.ProfileImageUrl;
                 player.Game = this.Game;
                 this.Game.AddPlayerToTeam(player);
+                _hub.Groups.Add(player.ConnectionID, Game.ID);
             }
             else
             {
@@ -153,6 +154,17 @@ namespace BuildHackathon.Hubs
             {
                 this._currentQuestionTimer.Change(500, Timeout.Infinite);
             }
+        }
+
+        public void EndGame()
+        {
+            _hub.Clients.Group(this.Game.ID).EndGame("Not enough players");
+            if (this._currentQuestionTimer != null)
+            {
+                this._currentQuestionTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                this._currentQuestionTimer = null;
+            }
+            this.IsStarted = false;
         }
     }
 }
