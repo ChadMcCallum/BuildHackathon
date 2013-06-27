@@ -64,7 +64,7 @@
 											<Image x:Name="imgPlayerImage" Source="{Binding Path=Image}" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" />
 											<TextBlock x:Name="txtPlayerName" Text="{Binding Path=Player.Name}" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="40" MaxWidth="540" TextTrimming="WordEllipsis" />
 										</StackPanel>
-										<TextBlock x:Name="txtPlayerScore" Text="{Binding Path=Player.Score}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" FontSize="40" FontWeight="Bold" />
+										<TextBlock x:Name="txtPlayerScore" Text="{Binding Path=Player.Score}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" FontSize="40" />
 									</Grid>
 								</DataTemplate>
 							</ListBox.ItemTemplate>
@@ -78,6 +78,10 @@
 					<StackPanel x:Name="stkInfo" Grid.Column="1" Orientation="Vertical">
 						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" VerticalAlignment="Top" FontSize="32" Margin="0,100,0,10" />
 						<Image x:Name="imgQrCode" HorizontalAlignment="Center" Width="400" Height="400" VerticalAlignment="Top" />
+						<StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center">
+							<TextBlock Text="To Win:" FontSize="50" VerticalAlignment="Center" />
+							<TextBlock x:Name="txtGoalScore" FontSize="50" VerticalAlignment="Center" Margin="20,0,0,0" Text="0" />
+						</StackPanel>
 					</StackPanel>
 
 					<StackPanel Grid.Column="2" Margin="5" Background="#E86850">
@@ -91,7 +95,7 @@
 										</Grid.Background>
 										<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 											<Image x:Name="imgPlayerImage" Source="{Binding Path=Image}" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" />
-											<TextBlock x:Name="txtPlayerName" Text="{Binding Path=Player.Name}" Margin="15,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="40" />
+											<TextBlock x:Name="txtPlayerName" Text="{Binding Path=Player.Name}" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="40" MaxWidth="540" TextTrimming="WordEllipsis" />
 										</StackPanel>
 										<TextBlock x:Name="txtPlayerScore" Text="{Binding Path=Player.Score}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" FontSize="40" />
 									</Grid>

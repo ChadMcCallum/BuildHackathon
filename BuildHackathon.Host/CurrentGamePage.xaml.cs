@@ -162,6 +162,7 @@ namespace BuildHackathon.Host
 
 		private async void UpdateTeams(Team[] teams)
 		{
+			int totalNumberOfPlayers = 0;
 			foreach (var team in teams)
 			{
 				if (team.Name.Equals("Blue", StringComparison.CurrentCultureIgnoreCase))
@@ -176,7 +177,15 @@ namespace BuildHackathon.Host
 					GameData.Game.RedTeam.Players = team.Players;
 					txtRedTeamScore.Text = team.Score.ToString();
 				}
+
+				totalNumberOfPlayers += team.Players.Count;
 			}
+
+			// Avoid divide by zero errors.
+			int goalScore = 0;
+			if (totalNumberOfPlayers > 0)
+				goalScore = (totalNumberOfPlayers / 2) * 500;
+			txtGoalScore.Text = goalScore.ToString();
             
 //InsertTestData();
 

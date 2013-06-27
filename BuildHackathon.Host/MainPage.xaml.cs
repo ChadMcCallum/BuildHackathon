@@ -57,6 +57,8 @@ namespace BuildHackathon.Host
             this.InitializeComponent();
 			this.DataContext = this;
 
+			txtErrorMessage.Text = string.Empty;
+
 			if (GameData.CustomTwitterHandles != null)
 			{
 				txtCustom1.Text = GameData.CustomTwitterHandles.Count > 0 ? GameData.CustomTwitterHandles[0] : string.Empty;
@@ -95,6 +97,9 @@ namespace BuildHackathon.Host
 
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
 		{
+			// Clear any previous error messages.
+			txtErrorMessage.Text = string.Empty;
+
 			var customAccounts = new List<string>();
 			AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
 			AddValidTwitterHandleToList(ref customAccounts, txtCustom2.Text);
@@ -104,22 +109,25 @@ namespace BuildHackathon.Host
 			AddValidTwitterHandleToList(ref customAccounts, txtCustom6.Text);
 
 			GameType gameType;
-			if (!radioUsersOnly.IsChecked.Value)
+			if (radioUsersOnly.IsChecked.Value)
 			{
+				gameType = GameType.PlayersOnly;
+			}
+			else if (radioUsersAndCustom.IsChecked.Value)
+			{
+				gameType = GameType.PlayersAndCelebs;
+			}
+			// Else GameType is Custom Only.
+			else
+			{
+				// Make sure they provided at least 2 custom accounts.
 				if (customAccounts.Count < 2)
 				{
-					btnStartGame.Content = "2 Accounts Required";
+					txtErrorMessage.Text = "At least 2 custom accounts are required.";
 					return;
 				}
 
-				if (radioCustomOnly.IsChecked.Value)
-					gameType = GameType.CelebsOnly;
-				else
-					gameType = GameType.PlayersAndCelebs;
-			}
-			else
-			{
-				gameType = GameType.PlayersOnly;
+				gameType = GameType.CelebsOnly;
 			}
 
 			GameData.CustomTwitterHandles = customAccounts;
@@ -151,11 +159,13 @@ namespace BuildHackathon.Host
 			}
 			catch (HttpRequestException)
 			{
-				btnStartGame.Content = "Could not connect :(";
+				txtErrorMessage.Text = "Could not connect :(  Please try again.";
 				return;
 			}
 			finally
 			{
+				btnStartGame.Content = "Start Game";
+
 				// Allow them to click button again now that we are done processing.
 				btnStartGame.IsEnabled = true;
 
