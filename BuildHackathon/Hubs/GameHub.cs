@@ -28,7 +28,8 @@ namespace BuildHackathon.Hubs
             var player = _players.FirstOrDefault(p => p.ConnectionID == Context.ConnectionId);
             if (player != null)
             {
-                player.Team.RemovePlayer(player);
+                if(player.Team != null)
+                    player.Team.RemovePlayer(player);
                 var thread = _games.FirstOrDefault(p => p.Game.ID == player.Game.ID);
                 if (thread != null)
                 {

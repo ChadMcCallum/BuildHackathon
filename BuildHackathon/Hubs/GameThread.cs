@@ -162,6 +162,8 @@ namespace BuildHackathon.Hubs
             var message = string.Format("The right answer was {0}", this.Game.Question.RightAnswer);
             foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
             {
+                if (player.Team == null)
+                    continue;
                 var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
                 if (playerGuess != null && playerGuess.Name.ToLower() == this.Game.Question.RightAnswer.ToLower())
                 {
@@ -182,9 +184,11 @@ namespace BuildHackathon.Hubs
                     player.Score = 0;
                 }
             }
-            var rightPlayer = this.Game.Question.PlayerOptions.Single(p => p.Name.ToLower() == this.Game.Question.RightAnswer.ToLower());
+            var rightPlayer = this.Game.Question.PlayerOptions.First(p => p.Name.ToLower() == this.Game.Question.RightAnswer.ToLower());
             foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
             {
+                if (player.Team == null)
+                    continue;
                 var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
                 var result = new { MyScore = player.Score, TeamScore = player.Team.Score, Actual = rightPlayer };
                 if (playerGuess == null)
