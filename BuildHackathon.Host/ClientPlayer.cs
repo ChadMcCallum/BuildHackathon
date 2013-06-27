@@ -17,7 +17,6 @@ namespace BuildHackathon.Host
 			this.Player = player;
 		}
 
-		public BitmapImage Image { get { return new BitmapImage(new Uri(this.Player.ImageURL, UriKind.Absolute)); } }
-		//public BitmapImage Image { get { return null; } }
+		public BitmapImage Image { get { return GameData.IsTestingOffline ? null : new BitmapImage(new Uri(this.Player.ImageURL, UriKind.Absolute)); } }
 	}
 }

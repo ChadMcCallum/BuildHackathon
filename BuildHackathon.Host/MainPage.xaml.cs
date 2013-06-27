@@ -97,6 +97,8 @@ namespace BuildHackathon.Host
 
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
 		{
+			GameData.IsTestingOffline = false;
+
 			// Clear any previous error messages.
 			txtErrorMessage.Text = string.Empty;
 
@@ -143,8 +145,7 @@ namespace BuildHackathon.Host
 				{
 					btnStartGame.Content = "Connecting...";
 
-					bool testingOffLine = false;
-					if (testingOffLine)
+					if (GameData.IsTestingOffline)
 					{
 						// Setup a fake connection.
 						GameData.HubProxy = new HubProxy(null, "");
@@ -194,7 +195,8 @@ namespace BuildHackathon.Host
 		private void btnEndGame_Tapped(object sender, TappedRoutedEventArgs e)
 		{
 			// Send a message to any remaining clients to cancel the game.
-			GameData.HubProxy.Invoke("CancelGame");
+			if (!GameData.IsTestingOffline)
+				GameData.HubProxy.Invoke("CancelGame");
 
 			GameData.Game = null;
 			GameData.HubProxy = null;

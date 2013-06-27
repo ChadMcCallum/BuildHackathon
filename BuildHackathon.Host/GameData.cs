@@ -15,5 +15,20 @@ namespace BuildHackathon.Host
 		
 		public static List<string> CustomTwitterHandles { get; set; }
 		public static GameType? GameType { get; set; }
+
+		private static bool _isTestingOffline = false;
+		public static bool IsTestingOffline 
+		{ 
+			get { return _isTestingOffline; }
+			set
+			{
+				_isTestingOffline = value;
+				if (_isTestingOffline)
+				{
+					Game = new Game("1");
+					HubProxy = new HubProxy(new HubConnection(string.Empty), string.Empty);
+				}
+			}
+		}
 	}
 }
