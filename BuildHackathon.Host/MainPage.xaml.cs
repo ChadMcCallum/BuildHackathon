@@ -15,6 +15,7 @@ using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using BuildHackathon.Shared;
 using System.Net.Http;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,8 +24,18 @@ namespace BuildHackathon.Host
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
+		#region INotifyPropertyChanged Members
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void SendPropertyChanged(string propertyName)
+		{
+			if (this.PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+		#endregion
+
 		public bool GameIsNull { get { return GameData.Game == null; } }
 
         public MainPage()
@@ -40,6 +51,14 @@ namespace BuildHackathon.Host
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+			if (GameIsNull)
+			{
+				btnStartGame.Content = "Start Game";
+			}
+			else
+			{
+				btnStartGame.Content = "Kill Game";
+			}
         }
 
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
@@ -50,21 +69,21 @@ namespace BuildHackathon.Host
 			try
 			{
 				// If we have not started a game yet.
-				if (btnStartGame.Tag == null)
+				if (GameIsNull)
 				{
 					btnStartGame.Content = "Connecting...";
 
 					// Connect to our Azure host.
 					var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
 					var hubProxy = hubConnection.CreateHubProxy("GameHub");
-					await hubConnection.Start();
+					//await hubConnection.Start();
 
 					// Get the game object back from Azure.
-					GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
-
+					//GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
+GameData.Game = new Game();
 					btnStartGame.Content = "Kill Game";
 					btnStartGame.Tag = "Playing";
-
+InsertTestData();
 					NavigateToGamePage();
 				}
 				// Else a game is currently being played.
@@ -87,7 +106,21 @@ namespace BuildHackathon.Host
 			{
 				// Allow them to click button again now that we are done processing.
 				btnStartGame.IsEnabled = true;
+
+				SendPropertyChanged("GameIsNull");
 			}
+		}
+
+		private void InsertTestData()
+		{
+			var player = new Player("player1") { Name = "Player 1", Score = 25 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("player1") { Name = "Batman", Score = 25 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("player1") { Name = "Yoda", Score = 25 };
+			GameData.Game.BlueTeam.AddPlayer(player);
 		}
 
 		private void btnGoBackToCurrentGame_Tapped(object sender, TappedRoutedEventArgs e)

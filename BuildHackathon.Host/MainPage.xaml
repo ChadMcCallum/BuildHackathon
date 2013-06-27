@@ -14,8 +14,8 @@
 
 	<Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 		<TextBlock x:Name="pageMain" Margin="30,30,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
-		<Button x:Name="btnStartGame" Content="Start Game" HorizontalAlignment="Left" Margin="29,163,0,0" VerticalAlignment="Top" Height="193" Width="281" Tapped="btnStartGame_Tapped"/>
-		<Button x:Name="btnGoBackToCurrentGame" Content="Go Back To Current Game" HorizontalAlignment="Left" VerticalAlignment="Top" Height="193" Width="281" Margin="404,163,0,0" Tapped="btnGoBackToCurrentGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+		<Button x:Name="btnStartGame" Content="Start Game" FontSize="40" HorizontalAlignment="Left" Margin="29,163,0,0" VerticalAlignment="Top" Height="200" Width="300" Tapped="btnStartGame_Tapped"/>
+		<Button x:Name="btnGoBackToCurrentGame" Content="Back To Game" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Height="200" Width="300" Margin="404,163,0,0" Tapped="btnGoBackToCurrentGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
 		
 	</Grid>
 </Page>

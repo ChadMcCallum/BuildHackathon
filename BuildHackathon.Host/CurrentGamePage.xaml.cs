@@ -28,7 +28,7 @@ namespace BuildHackathon.Host
 			this.DataContext = this;
 		}
 
-		public List<ClientPlayer> Team1Players 
+		public List<ClientPlayer> BlueTeamPlayers 
 		{ 
 			get 
 			{
@@ -38,7 +38,7 @@ namespace BuildHackathon.Host
 				return list;
 			} 
 		}
-		public List<ClientPlayer> Team2Players
+		public List<ClientPlayer> RedTeamPlayers
 		{
 			get
 			{
@@ -65,9 +65,7 @@ namespace BuildHackathon.Host
 				GameData.Game = pageState["Game"] as Game;
 			}
 
-			// Allow people to join the game.
-			imgQrCode.Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(GameData.Game.QRCodeImage, UriKind.Absolute));
-			txtQrCodeLabel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+			RefreshData();
 		}
 
 		/// <summary>
@@ -79,6 +77,16 @@ namespace BuildHackathon.Host
 		protected override void SaveState(Dictionary<String, Object> pageState)
 		{
 			pageState["Game"] = GameData.Game;
+		}
+
+		private void RefreshData()
+		{
+			// Allow people to join the game.
+			imgQrCode.Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(GameData.Game.QRCodeImage, UriKind.Absolute));
+			txtQrCodeLabel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+
+			txtBlueTeamScore.Text = GameData.Game.BlueTeam.Score.ToString();
+			txtRedTeamScore.Text = GameData.Game.RedTeam.Score.ToString();
 		}
 	}
 }
