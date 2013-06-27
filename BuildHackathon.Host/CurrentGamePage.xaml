@@ -72,11 +72,11 @@
 						<Grid>
 							<TextBlock Text="Total" FontSize="50" Margin="10,0,0,0" VerticalAlignment="Center" />
 							<TextBlock x:Name="txtBlueTeamScore" FontSize="60" TextAlignment="Right" HorizontalAlignment="Right" Margin="0,0,10,0" Text="0" />
-						</Grid>					
+						</Grid>	
 					</StackPanel>
 					
 					<StackPanel x:Name="stkInfo" Grid.Column="1" Orientation="Vertical">
-						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" VerticalAlignment="Top" FontSize="30" Margin="0,100,0,10" />
+						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" VerticalAlignment="Top" FontSize="32" Margin="0,100,0,10" />
 						<Image x:Name="imgQrCode" HorizontalAlignment="Center" Width="400" Height="400" VerticalAlignment="Top" />
 					</StackPanel>
 

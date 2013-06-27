@@ -113,8 +113,6 @@ namespace BuildHackathon.Host
 				this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 				{
 					txtTweet.Text = message;
-					GameData.Game = null;
-					GameData.HubProxy = null;
 				}));
 
 			RefreshAllData();
@@ -190,7 +188,6 @@ namespace BuildHackathon.Host
 		{
 			// Allow people to join the game.
 			imgQrCode.Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(GameData.Game.QRCodeImage, UriKind.Absolute));
-			txtQrCodeLabel.Visibility = Windows.UI.Xaml.Visibility.Visible;
 
 			UpdateTeams(new Team[] { GameData.Game.BlueTeam, GameData.Game.RedTeam });
 		}

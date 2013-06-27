@@ -96,16 +96,16 @@ namespace BuildHackathon.Host
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
 		{
 			var customAccounts = new List<string>();
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom2.Text);
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom3.Text);
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom4.Text);
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom5.Text);
+			AddValidTwitterHandleToList(ref customAccounts, txtCustom6.Text);
+
 			GameType gameType;
 			if (!radioUsersOnly.IsChecked.Value)
 			{
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom2.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom3.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom4.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom5.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom6.Text);
-
 				if (customAccounts.Count < 2)
 				{
 					btnStartGame.Content = "2 Accounts Required";
