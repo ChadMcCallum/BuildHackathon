@@ -80,7 +80,10 @@
 						</Grid>	
 					</StackPanel>
 
-					<StackPanel x:Name="stkInfo" Grid.Column="1" Orientation="Vertical">
+					<StackPanel x:Name="stkInfo" Grid.Column="1" Orientation="Vertical" Margin="0,5,0,5">
+						<StackPanel.Background>
+							<SolidColorBrush Color="#69D2F5" Opacity="0.5" />
+						</StackPanel.Background>
 						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" Foreground="Black" FontWeight="Bold" VerticalAlignment="Top" FontSize="34" Margin="0,80,0,0" />
 						<Image x:Name="imgQrCode" HorizontalAlignment="Center" Width="400" Height="400" VerticalAlignment="Top" />
 						<StackPanel Orientation="Horizontal" Margin="0,70,0,0" HorizontalAlignment="Center">
