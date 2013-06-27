@@ -17,6 +17,7 @@ namespace BuildHackathon.Host
 			this.Player = player;
 		}
 
-		public BitmapImage Image { get { return null; } }//new BitmapImage(new Uri(this.Player.ImageURL, UriKind.Absolute)); } }
+		public BitmapImage Image { get { return new BitmapImage(new Uri(this.Player.ImageURL, UriKind.Absolute)); } }
+		//public BitmapImage Image { get { return null; } }
 	}
 }

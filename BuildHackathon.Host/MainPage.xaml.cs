@@ -83,12 +83,15 @@ namespace BuildHackathon.Host
 					// Connect to our Azure host.
 					var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
 					var hubProxy = hubConnection.CreateHubProxy("GameHub");
-					//await hubConnection.Start();
+					await hubConnection.Start();
+					
+					// Save the proxy.
+					GameData.HubProxy = hubProxy;
 
 					// Get the game object back from Azure.
-					//GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
-GameData.Game = new Game();
-InsertTestData();
+					GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
+					
+//GameData.Game = new Game();
 				}
 			}
 			catch (HttpRequestException)
@@ -108,18 +111,6 @@ InsertTestData();
 			NavigateToGamePage();
 		}
 
-		private void InsertTestData()
-		{
-			var player = new Player("player1") { Name = "Player 1", Score = 25 };
-			GameData.Game.BlueTeam.AddPlayer(player);
-
-			player = new Player("player1") { Name = "Batman", Score = 25 };
-			GameData.Game.BlueTeam.AddPlayer(player);
-
-			player = new Player("player1") { Name = "Yoda", Score = 25 };
-			GameData.Game.BlueTeam.AddPlayer(player);
-		}
-
 		private void NavigateToGamePage()
 		{
 			// Navigate to the game page.
@@ -129,7 +120,11 @@ InsertTestData();
 
 		private void btnEndGame_Tapped(object sender, TappedRoutedEventArgs e)
 		{
+			// Send a message to any remaining clients to cancel the game.
+			GameData.HubProxy.Invoke("CancelGame");
+
 			GameData.Game = null;
+			GameData.HubProxy = null;
 			UpdateUI();
 		}
     }
