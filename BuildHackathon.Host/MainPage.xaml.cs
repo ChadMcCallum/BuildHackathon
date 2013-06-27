@@ -143,18 +143,26 @@ namespace BuildHackathon.Host
 				{
 					btnStartGame.Content = "Connecting...";
 
-					// Connect to our Azure host.
-					var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
-					var hubProxy = hubConnection.CreateHubProxy("GameHub");
-					await hubConnection.Start();
-					
-					// Save the proxy.
-					GameData.HubProxy = hubProxy;
+					bool testingOffLine = false;
+					if (testingOffLine)
+					{
+						// Setup a fake connection.
+						GameData.HubProxy = new HubProxy(null, "");
+						GameData.Game = new Game("1");
+					}
+					else
+					{
+						// Connect to our Azure host.
+						var hubConnection = new HubConnection("http://buildhackathon.cloudapp.net/signalr");
+						var hubProxy = hubConnection.CreateHubProxy("GameHub");
+						await hubConnection.Start();
 
-					// Get the game object back from Azure.
-					GameData.Game = await hubProxy.Invoke<Game>("CreateGame", gameType, customAccounts.ToArray());
-					
-//GameData.Game = new Game();
+						// Save the proxy.
+						GameData.HubProxy = hubProxy;
+
+						// Get the game object back from Azure.
+						GameData.Game = await hubProxy.Invoke<Game>("CreateGame", gameType, customAccounts.ToArray());
+					}
 				}
 			}
 			catch (HttpRequestException)
