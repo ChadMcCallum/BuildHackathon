@@ -56,6 +56,31 @@ namespace BuildHackathon.Host
         {
             this.InitializeComponent();
 			this.DataContext = this;
+
+			if (GameData.CustomTwitterHandles != null)
+			{
+				txtCustom1.Text = GameData.CustomTwitterHandles.Count > 0 ? GameData.CustomTwitterHandles[0] : string.Empty;
+				txtCustom2.Text = GameData.CustomTwitterHandles.Count > 1 ? GameData.CustomTwitterHandles[1] : string.Empty;
+				txtCustom3.Text = GameData.CustomTwitterHandles.Count > 2 ? GameData.CustomTwitterHandles[2] : string.Empty;
+				txtCustom4.Text = GameData.CustomTwitterHandles.Count > 3 ? GameData.CustomTwitterHandles[3] : string.Empty;
+				txtCustom5.Text = GameData.CustomTwitterHandles.Count > 4 ? GameData.CustomTwitterHandles[4] : string.Empty;
+				txtCustom6.Text = GameData.CustomTwitterHandles.Count > 5 ? GameData.CustomTwitterHandles[5] : string.Empty;
+			}
+
+			if (GameData.GameType != null)
+			{
+				switch (GameData.GameType.Value)
+				{
+					default:
+					case GameType.PlayersOnly: radioUsersOnly.IsChecked = true; break;
+					case GameType.CelebsOnly: radioCustomOnly.IsChecked = true; break;
+					case GameType.PlayersAndCelebs: radioUsersAndCustom.IsChecked = true; break;
+				}
+			}
+			else
+			{
+				radioUsersAndCustom.IsChecked = true;
+			}
         }
 
         /// <summary>
@@ -71,20 +96,34 @@ namespace BuildHackathon.Host
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
 		{
 			var customAccounts = new List<string>();
+			GameType gameType;
 			if (!radioUsersOnly.IsChecked.Value)
 			{
 				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
-				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom2.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom3.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom4.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom5.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom6.Text);
 
 				if (customAccounts.Count < 2)
 				{
-					btnStartGame.Content = "At Least 2 Accounts Required";
+					btnStartGame.Content = "2 Accounts Required";
+					return;
 				}
+
+				if (radioCustomOnly.IsChecked.Value)
+					gameType = GameType.CelebsOnly;
+				else
+					gameType = GameType.PlayersAndCelebs;
 			}
+			else
+			{
+				gameType = GameType.PlayersOnly;
+			}
+
+			GameData.CustomTwitterHandles = customAccounts;
+			GameData.GameType = gameType;
 
 			// Don't allow them to click again while we process.
 			btnStartGame.IsEnabled = false;
@@ -105,14 +144,14 @@ namespace BuildHackathon.Host
 					GameData.HubProxy = hubProxy;
 
 					// Get the game object back from Azure.
-					GameData.Game = await hubProxy.Invoke<Game>("CreateGame");
+					GameData.Game = await hubProxy.Invoke<Game>("CreateGame", gameType, customAccounts.ToArray());
 					
 //GameData.Game = new Game();
 				}
 			}
 			catch (HttpRequestException)
 			{
-				btnStartGame.Content = "Could not connect :( Try again!";
+				btnStartGame.Content = "Could not connect :(";
 				return;
 			}
 			finally
@@ -147,7 +186,7 @@ namespace BuildHackathon.Host
 		private void AddValidTwitterHandleToList(ref List<string> list, string handle)
 		{
 			handle = handle.Trim();
-			if (!string.IsNullOrWhiteSpace(handle))
+			if (!string.IsNullOrWhiteSpace(handle) && !list.Contains(handle))
 				list.Add(handle);
 		}
     }

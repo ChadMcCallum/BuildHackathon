@@ -41,8 +41,7 @@
 					<Image Source="Images/TwitterLogo.png" Width="150" />
 					<Grid>
 						<Image Source="Images/TweetBubble.png" Stretch="Fill" Margin="10" />
-						<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1390" Margin="110,0,0,0" Text="Waiting for players to join... Scan the QR code to join the game." />
-						
+						<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1350" Margin="110,0,0,0" Text="Waiting for players to join... Scan the QR code to join the game." />
 					</Grid>
 				</StackPanel>
 				<Grid>
@@ -63,9 +62,9 @@
 										</Grid.Background>
 										<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 											<Image x:Name="imgPlayerImage" Source="{Binding Path=Image}" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" />
-											<TextBlock x:Name="txtPlayerName" Text="{Binding Path=Player.Name}" Margin="15,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="40" />
+											<TextBlock x:Name="txtPlayerName" Text="{Binding Path=Player.Name}" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="40" MaxWidth="540" TextTrimming="WordEllipsis" />
 										</StackPanel>
-										<TextBlock x:Name="txtPlayerScore" Text="{Binding Path=Player.Score}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" FontSize="40" />
+										<TextBlock x:Name="txtPlayerScore" Text="{Binding Path=Player.Score}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" FontSize="40" FontWeight="Bold" />
 									</Grid>
 								</DataTemplate>
 							</ListBox.ItemTemplate>

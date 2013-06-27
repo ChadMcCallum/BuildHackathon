@@ -164,10 +164,34 @@ namespace BuildHackathon.Host
 			var player = new Player("player1") { Name = "Player 1", Score = 25 };
 			GameData.Game.BlueTeam.AddPlayer(player);
 
-			player = new Player("player1") { Name = "Batman", Score = 250 };
+			player = new Player("Batman") { Name = "Batman", Score = 250 };
 			GameData.Game.BlueTeam.AddPlayer(player);
 
-			player = new Player("player1") { Name = "Yoda", Score = 2500 };
+			player = new Player("Yoda") { Name = "Yoda", Score = 2500 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("you") { Name = "you", Score = 25 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("me") { Name = "me", Score = 250 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("them") { Name = "them", Score = 2500 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("Up") { Name = "Up", Score = 250 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("Down") { Name = "Down", Score = 2500 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("Left") { Name = "Left", Score = 25 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("Right") { Name = "Right", Score = 250 };
+			GameData.Game.BlueTeam.AddPlayer(player);
+
+			player = new Player("A really really long twitter handle") { Name = "A really really long twitter handle", Score = 26008 };
 			GameData.Game.BlueTeam.AddPlayer(player);
 		}
 	}

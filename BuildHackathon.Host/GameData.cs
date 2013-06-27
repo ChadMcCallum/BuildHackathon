@@ -12,5 +12,8 @@ namespace BuildHackathon.Host
 	{
 		public static Game Game { get; set; }
 		public static IHubProxy HubProxy { get; set; }
+		
+		public static List<string> CustomTwitterHandles { get; set; }
+		public static GameType? GameType { get; set; }
 	}
 }
