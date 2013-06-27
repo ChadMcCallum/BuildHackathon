@@ -51,7 +51,8 @@ namespace BuildHackathon.Hubs
 
         private void GetNewQuestion(object obj)
         {
-            var user = GetRandomUser();
+            var options = GetPlayerOptions();
+            var user = options.OrderBy(x => _random.Next()).First();
             var tweets = _service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions
                 {
                     ScreenName = user.Name,
@@ -63,9 +64,9 @@ namespace BuildHackathon.Hubs
             var question = new Question
                 {
                     Tweet = randomTweet.TextDecoded,
-                    RightAnswer = randomTweet.User.ScreenName
+                    RightAnswer = randomTweet.User.ScreenName,
+                    PlayerOptions = options.ToArray()
                 };
-            SetPlayerOptions(question, user);
             this.Game.SetQuestion(question);
             _hub.Clients.Group(Game.ID).NewQuestion(question);
             _hub.Clients.Client(Host).NewQuestion(question);
@@ -73,26 +74,7 @@ namespace BuildHackathon.Hubs
             this._currentQuestionTimer = new Timer(QuestionTimeout, null, 15000, Timeout.Infinite);
         }
 
-        private Player GetRandomUser()
-        {
-            if (this.Game.Type == GameType.CelebsOnly)
-            {
-                return Game.Celebrities.OrderBy(x => _random.Next()).First();
-            }
-            else if(this.Game.Type == GameType.PlayersOnly)
-            {
-                return Game.RedTeam.Players.Concat(Game.BlueTeam.Players).OrderBy(x => _random.Next()).First();
-            }
-            else
-            {
-                return Game.Celebrities.Concat(Game.RedTeam.Players)
-                    .Concat(Game.BlueTeam.Players)
-                    .OrderBy(x => _random.Next())
-                    .First();
-            }
-        }
-
-        private void SetPlayerOptions(Question question, Player user)
+        private List<Player> GetPlayerOptions()
         {
             var list = new List<Player>();
             if (this.Game.Type == GameType.CelebsOnly)
@@ -111,12 +93,7 @@ namespace BuildHackathon.Hubs
                         .OrderBy(x => _random.Next())
                         .Take(6));
             }
-            if (list.All(p => p.Name != user.Name))
-                SetPlayerOptions(question, user);
-            else
-            {
-                question.PlayerOptions = list.ToArray();
-            }
+            return list;
         }
 
         private void QuestionTimeout(object obj)
