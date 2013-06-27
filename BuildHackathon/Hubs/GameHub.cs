@@ -75,8 +75,8 @@ namespace BuildHackathon.Hubs
                 var gamestate = CreateGame(3,
                                            new[]
                                                {
-                                                   "shanselman", "scottgu", "codinghorror", "drunkhulk", "depresseddarth",
-                                                   "shitmydadsays"
+                                                   "shanselman", "scottgu", "codinghorror", "billgates", "gblock",
+                                                   "mkristensen"
                                                });
                 gamestate.ID = id;
                 game = _games.First();
@@ -88,6 +88,14 @@ namespace BuildHackathon.Hubs
                 game.AddPlayer(player);
                 if (game.Game.TotalPlayers >= 2 && !game.IsStarted)
                     game.Start();
+                else if(!game.IsStarted)
+                {
+                    Clients.Group(game.Game.ID).Wait();
+                }
+                else if (game.IsStarted)
+                {
+                    Clients.Client(Context.ConnectionId).Waiting();
+                }
                 return player.Team.Name;
             }
             throw new Exception("Game doesn't exist");

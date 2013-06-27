@@ -34,6 +34,9 @@ $().ready(function () {
     hubProxy.client.Wait = function() {
         $.mobile.changePage($('#wait-round'), { changeHash: false });
     };
+    hubProxy.client.Waiting = function() {
+        $.mobile.changePage($('#waiting'), { changeHash: false });
+    };
     hubProxy.client.Timeout = function (args) {
         updateResult(args);
         $.mobile.changePage($('#timeout'), { changeHash: false });
@@ -106,7 +109,7 @@ function JoinGame() {
         } else {
             $('[data-role=content]').css('background-color', '#587498');
         }
-        $.mobile.changePage($('#wait-round'), { changeHash: false });
+        //$.mobile.changePage($('#wait-round'), { changeHash: false });
     }).fail(function (e) { alert(e); });
 }
 

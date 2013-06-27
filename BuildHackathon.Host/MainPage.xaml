@@ -35,15 +35,15 @@
 							<StackPanel Orientation="Vertical" Margin="10,0,0,0">
 								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 									<TextBox x:Name="txtCustom1" Width="200" IsEnabled="{Binding Path=GameIsNull}" Text="shanselman" />
-									<TextBox x:Name="txtCustom2" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="drunkhulk" />
+									<TextBox x:Name="txtCustom2" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="billgates" />
 								</StackPanel>
 								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 									<TextBox x:Name="txtCustom3" Width="200" IsEnabled="{Binding Path=GameIsNull}" Text="scottgu" />
-									<TextBox x:Name="txtCustom4" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="depresseddarth" />
+									<TextBox x:Name="txtCustom4" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="gblock" />
 								</StackPanel>
 								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 									<TextBox x:Name="txtCustom5" Width="200" IsEnabled="{Binding Path=GameIsNull}" Text="codinghorror" />
-									<TextBox x:Name="txtCustom6" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="shitmydadsays" />
+                                    <TextBox x:Name="txtCustom6" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" Text="mkristensen" />
 								</StackPanel>
 							</StackPanel>
 						</StackPanel>
