@@ -177,7 +177,9 @@
     <Content Include="images\others.png" />
     <Content Include="images\miss.png" />
     <Content Include="images\ok.png" />
+    <Content Include="images\lose.png" />
     <Content Include="images\waiting.png" />
+    <Content Include="images\win.png" />
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="www\css\metro\images\ajax-loader.png" />
     <Content Include="www\css\metro\images\checkbox-disabled.png" />

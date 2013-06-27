@@ -61,7 +61,7 @@ namespace BuildHackathon.Hubs
 
             _hub.Clients.Client(Host).UpdateScore(new[] { Game.RedTeam, Game.BlueTeam });
             _hub.Clients.Group(Game.ID).ResetScore();
-            if(Game.TotalPlayers > 1)
+            if (Game.TotalPlayers > 1)
                 GetNewQuestion(null);
             else
             {
@@ -86,7 +86,8 @@ namespace BuildHackathon.Hubs
                 {
                     ScreenName = user.Name,
                     ExcludeReplies = true,
-                    IncludeRts = false
+                    IncludeRts = false,
+                    Count = 100
                 });
                 if (!tweets.Any())
                     user = null;
@@ -108,12 +109,15 @@ namespace BuildHackathon.Hubs
 
         private bool CheckForWinner()
         {
-            var goal = (Game.TotalPlayers/2);// *5 * 100;
+            var goal = (Game.TotalPlayers / 2) *5 * 100;
             var goalIsPassed = Game.RedTeam.Score >= goal || Game.BlueTeam.Score >= goal;
             if (goalIsPassed && Game.RedTeam.Score > Game.BlueTeam.Score)
             {
                 _hub.Clients.Client(Host).EndGame("The Red Team Won!");
                 _hub.Clients.Group(Game.ID).EndGame("The Red Team Won!");
+                if (_currentQuestionTimer != null)
+                    _currentQuestionTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
                 _currentQuestionTimer = new Timer(NewGame, null, 30000, Timeout.Infinite);
                 return true;
             }
@@ -121,7 +125,10 @@ namespace BuildHackathon.Hubs
             {
                 _hub.Clients.Client(Host).EndGame("The Blue Team Won!");
                 _hub.Clients.Group(Game.ID).EndGame("The Blue Team Won!");
-                _currentQuestionTimer = new Timer(NewGame, null, 30000, Timeout.Infinite);
+                if (_currentQuestionTimer != null)
+                    _currentQuestionTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+                _currentQuestionTimer = new Timer(NewGame, null, 20000, Timeout.Infinite);
                 return true;
             }
             return false;
@@ -179,7 +186,7 @@ namespace BuildHackathon.Hubs
             foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
             {
                 var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
-                var result = new {MyScore = player.Score, TeamScore = player.Team.Score, Actual = rightPlayer};
+                var result = new { MyScore = player.Score, TeamScore = player.Team.Score, Actual = rightPlayer };
                 if (playerGuess == null)
                 {
                     //timeout
@@ -197,7 +204,7 @@ namespace BuildHackathon.Hubs
                 }
             }
             //update scores
-            _hub.Clients.Client(Host).UpdateScore(new [] {Game.RedTeam, Game.BlueTeam});
+            _hub.Clients.Client(Host).UpdateScore(new[] { Game.RedTeam, Game.BlueTeam });
 
             //set timer to next question
             _currentQuestionTimer = new Timer(GetNewQuestion, null, 5000, Timeout.Infinite);
@@ -208,12 +215,22 @@ namespace BuildHackathon.Hubs
             var user = _service.GetUserProfileFor(new GetUserProfileForOptions { ScreenName = player.Name });
             if (user != null)
             {
+                var tweets =
+                    _service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions
+                        {
+                            ScreenName = user.ScreenName,
+                            Count = 1
+                        });
+                if (tweets == null || !tweets.Any())
+                {
+                    throw new Exception("Account is private or has no public tweets");
+                }
                 player.Name = user.ScreenName;
                 player.ImageURL = user.ProfileImageUrl;
                 player.Game = this.Game;
                 this.Game.AddPlayerToTeam(player);
                 _hub.Groups.Add(player.ConnectionID, Game.ID);
-                _hub.Clients.Client(Host).NewPlayer(new [] { Game.RedTeam, Game.BlueTeam });
+                _hub.Clients.Client(Host).NewPlayer(new[] { Game.RedTeam, Game.BlueTeam });
             }
             else
             {
@@ -244,7 +261,7 @@ namespace BuildHackathon.Hubs
 
         public void RemovePlayer(Player player)
         {
-            _hub.Clients.Client(Host).RemovePlayer(new[] { this.Game.RedTeam, this.Game.BlueTeam});
+            _hub.Clients.Client(Host).RemovePlayer(new[] { this.Game.RedTeam, this.Game.BlueTeam });
         }
 
         public void CancelGame()

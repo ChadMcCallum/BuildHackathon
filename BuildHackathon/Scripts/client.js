@@ -9,6 +9,8 @@ $().ready(function () {
         $.connection.hub.stop();
     };
 
+    bodyMinHeightFix();
+
     //client methods
     hubProxy.client.NewQuestion = function (question) {
         //init UI with data
@@ -45,7 +47,17 @@ $().ready(function () {
         $.mobile.changePage($('#fail'), { changeHash: false });
     };
     hubProxy.client.EndGame = function (msg) {
-        $('#game-over-message').html("<p>" + msg + "</p>");
+        if (msg.indexOf(window.team) >= 0) {
+            $('#win').show();
+            $('#lose').hide();
+        } else if (msg.indexOf("Won") >= 0) {
+            $('#win').hide();
+            $('#lose').show();
+        } else {
+            $('#win').hide();
+            $('#lose').hide();
+        }
+        $('#game-over-message').html(msg);
         $.mobile.changePage($('#gameover'), { changeHash: false });
     };
     hubProxy.client.ResetScore = function() {
@@ -87,6 +99,7 @@ function getParameterByName(name) {
 function JoinGame() {
     var gameID = getParameterByName("id");
     hubProxy.server.joinGame(gameID, $('#twitterName').val()).done(function (team) {
+        window.team = team;
         if (team == "Red") {
             //set background to red
             $('[data-role=content]').css('background-color', '#E86850');
@@ -106,3 +119,30 @@ function JoinGame() {
 //        //horizontal layout
 //    }
 //}
+
+function bodyMinHeightFix() {
+    var isWp7 = window.navigator.userAgent.indexOf("IEMobile/9.0") != -1;
+
+    if (!isWp7) return;
+
+    // portrait mode only
+    if (window.innerHeight <= window.innerWidth) return;
+
+    var zoomFactorW = document.body.clientWidth / screen.availWidth;
+
+    // default value (web browser app)
+    var addrBarH = 72;
+
+    // no app bar in web view control
+    if (typeof window.external.Notify !== "undefined") {
+        addrBarH = 0;
+    }
+
+    var divHeightInDoc = (screen.availHeight - addrBarH) * zoomFactorW;
+    //$("body")[0].style.minHeight = divHeightInDoc + 'px';
+
+    var page = $("div[data-role='page']");
+    if (page.length > 0)
+        page[0].style.setProperty("min-height", divHeightInDoc + "px", 'important');
+
+}

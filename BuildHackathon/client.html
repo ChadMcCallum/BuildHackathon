@@ -58,6 +58,24 @@
         body {
             background-color: black !important;
         }
+
+        @media screen and (orientation: portrait) {
+            @-ms-viewport {
+                width: 320px;
+                user-zoom: fixed;
+                max-zoom: 1;
+                min-zoom: 1;
+            }
+        }
+
+        @media screen and (orientation: landscape) {
+            @-ms-viewport {
+                width: 480px;
+                user-zoom: fixed;
+                max-zoom: 1;
+                min-zoom: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -71,7 +89,8 @@
 
         <div data-role="content">
             <p style="color: black;">Enter your twitter handle:</p>
-            <input type='text' id='twitterName' /><br/><br />
+            <input type='text' id='twitterName' /><br />
+            <br />
             <button id='start-playing'>Join Game</button>
         </div>
         <!-- /content -->
@@ -87,7 +106,7 @@
         <!-- /header -->
 
         <div data-role="content" style="text-align: center;">
-            <img src="images/others.png"/>
+            <img src="images/others.png" />
             <h3 style="text-align: center;">waiting for more players...</h3>
         </div>
         <!-- /content -->
@@ -122,11 +141,12 @@
             <h1>Who Tweet Dat?</h1>
         </div>
         <div data-role="content" style="text-align: center;">
-            <img src="images/ok.png"/>
+            <img src="images/ok.png" />
             <div style="text-align: center;">
                 <h3 style="text-align: center;">correct</h3>
                 <div class="actual">
-                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                    <img style="vertical-align: middle;" />
+                    <span class="name"></span>
                 </div>
             </div>
         </div>
@@ -139,11 +159,12 @@
             <h1>Who Tweet Dat?</h1>
         </div>
         <div data-role="content" style="text-align: center;">
-            <img src="images/cancel.png"/>
+            <img src="images/cancel.png" />
             <div style="text-align: center;">
                 <h3 style="text-align: center;">incorrect</h3>
                 <div class="actual">
-                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                    <img style="vertical-align: middle;" />
+                    <span class="name"></span>
                 </div>
             </div>
         </div>
@@ -156,11 +177,12 @@
             <h1>Who Tweet Dat?</h1>
         </div>
         <div data-role="content" style="text-align: center;">
-            <img src="images/miss.png"/>
+            <img src="images/miss.png" />
             <div style="text-align: center;">
                 <h3 style="text-align: center;">out of time</h3>
                 <div class="actual">
-                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                    <img style="vertical-align: middle;" />
+                    <span class="name"></span>
                 </div>
             </div>
         </div>
@@ -172,9 +194,12 @@
         <div data-role="header">
             <h1>Who Tweet Dat?</h1>
         </div>
-        <div data-role="content">
-            <h1>GAME OVER MAN!</h1>
-            <div id="game-over-message"></div>
+        <div data-role="content" style="text-align: center;">
+            <h1 style="text-align: center;">game over</h1>
+            <img src="images/win.png" id="win" style="margin: 5px; width: 200px;" />
+            <img src="images/lose.png" id="lose" style="margin: 5px; width: 200px;" />
+            <h2 style="text-align: center;" id="game-over-message"></h2>
+            <p>starting new round...</p>
         </div>
         <div data-role="footer" class="footer" data-position="fixed">
         </div>
