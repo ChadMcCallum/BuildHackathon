@@ -52,13 +52,20 @@ namespace BuildHackathon.Hubs
         private void GetNewQuestion(object obj)
         {
             var options = GetPlayerOptions();
-            var user = options.OrderBy(x => _random.Next()).First();
-            var tweets = _service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions
+            Player user = null;
+            IEnumerable<TwitterStatus> tweets = null;
+            while (user == null)
+            {
+                user = options.OrderBy(x => _random.Next()).First();
+                tweets = _service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions
                 {
                     ScreenName = user.Name,
                     ExcludeReplies = true,
                     IncludeRts = false
                 });
+                if (!tweets.Any())
+                    user = null;
+            }
             var randomIndex = _random.Next(tweets.Count());
             var randomTweet = tweets.ElementAt(randomIndex);
             var question = new Question
@@ -71,7 +78,7 @@ namespace BuildHackathon.Hubs
             _hub.Clients.Group(Game.ID).NewQuestion(question);
             _hub.Clients.Client(Host).NewQuestion(question);
             //have 15 seconds to answer
-            this._currentQuestionTimer = new Timer(QuestionTimeout, null, 15000, Timeout.Infinite);
+            this._currentQuestionTimer = new Timer(QuestionTimeout, null, 20000, Timeout.Infinite);
         }
 
         private List<Player> GetPlayerOptions()
@@ -103,10 +110,28 @@ namespace BuildHackathon.Hubs
             foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
             {
                 var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
-                if (playerGuess != null && playerGuess.Name == this.Game.Question.RightAnswer)
+                if (playerGuess != null && playerGuess.Name.ToLower() == this.Game.Question.RightAnswer.ToLower())
                 {
                     player.Team.Score += 100;
                     player.Score += 100;
+                }
+                else if (playerGuess != null)
+                {
+                    player.Team.Score -= 10;
+                    player.Score -= 10;
+                }
+                else
+                {
+                    player.Team.Score -= 5;
+                    player.Score -= 5;
+                }
+                if (player.Team.Score < 0)
+                {
+                    player.Team.Score = 0;
+                }
+                if (player.Score < 0)
+                {
+                    player.Score = 0;
                 }
             }
             var rightPlayer = this.Game.Question.PlayerOptions.Single(p => p.Name.ToLower() == this.Game.Question.RightAnswer.ToLower());
@@ -119,7 +144,7 @@ namespace BuildHackathon.Hubs
                     //timeout
                     _hub.Clients.Client(player.ConnectionID).Timeout(result);
                 }
-                else if (playerGuess.Name != this.Game.Question.RightAnswer)
+                else if (playerGuess.Name.ToLower() != this.Game.Question.RightAnswer.ToLower())
                 {
                     //wrong
                     _hub.Clients.Client(player.ConnectionID).Wrong(result);

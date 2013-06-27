@@ -163,6 +163,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\winrt45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RobotKit">
+      <HintPath>..\..\Sphero-Win-SDK\samples\BasicDriveApp\RobotKit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BuildHackathon.Shared\BuildHackathon.Shared.csproj">

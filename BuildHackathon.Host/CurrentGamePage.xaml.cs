@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using BuildHackathon.Host.Common;
+//using RobotKit;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking;
+using Windows.Networking.Proximity;
+using Windows.Networking.Sockets;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -114,7 +120,37 @@ namespace BuildHackathon.Host
 			RefreshAllData();
 		}
 
-		/// <summary>
+        //public void ConnectRobot()
+        //{
+        //    RobotProvider provider = RobotProvider.GetSharedProvider();
+        //    provider.DiscoveredRobotEvent += OnRobotDiscovered;
+        //    provider.NoRobotsEvent += OnNoRobotsEvent;
+        //    provider.ConnectedRobotEvent += OnRobotConnected;
+        //    provider.FindRobots();
+        //}
+
+        //private void OnRobotConnected(object sender, Robot e)
+        //{
+        //    Debug.WriteLine(string.Format("Connected to {0}", robot));
+
+        //    robot.SetRGBLED(255, 255, 255);
+        //    robot.SensorControl.Hz = 10;
+        //}
+
+        //private void OnNoRobotsEvent(object sender, EventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private Sphero robot;
+        //private void OnRobotDiscovered(object sender, Robot e)
+        //{
+        //    RobotProvider provider = RobotProvider.GetSharedProvider();
+        //    provider.ConnectRobot(e);
+        //    robot = (Sphero)robot;
+        //}
+
+	    /// <summary>
 		/// Preserves state associated with this page in case the application is suspended or the
 		/// page is discarded from the navigation cache.  Values must conform to the serialization
 		/// requirements of <see cref="SuspensionManager.SessionState"/>.
@@ -126,7 +162,7 @@ namespace BuildHackathon.Host
 			pageState["HubProxy"] = GameData.HubProxy;
 		}
 
-		private void UpdateTeams(Team[] teams)
+		private async void UpdateTeams(Team[] teams)
 		{
 			foreach (var team in teams)
 			{
@@ -144,6 +180,7 @@ namespace BuildHackathon.Host
 				}
 			}
 
+            
 //InsertTestData();
 
 			SendPropertyChanged("BlueTeamPlayers");

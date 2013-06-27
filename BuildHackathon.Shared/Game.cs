@@ -22,7 +22,7 @@ namespace BuildHackathon.Shared
         public Game(string id)
         {
             this.ID = id;
-            this.QRCodeImage = string.Format("http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={0}",
+            this.QRCodeImage = string.Format("http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={0}&chld=H|0",
                                  Uri.EscapeDataString(
                                      "http://buildhackathon.cloudapp.net/client.html?id=" +
                                      this.ID));
