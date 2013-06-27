@@ -184,7 +184,7 @@ namespace BuildHackathon.Host
 			// Avoid divide by zero errors.
 			int goalScore = 0;
 			if (totalNumberOfPlayers > 0)
-				goalScore = (totalNumberOfPlayers / 2) * 500;
+				goalScore = (int)((float)(totalNumberOfPlayers / 2f) * 500);
 			txtGoalScore.Text = goalScore.ToString();
             
 			// If we are testing offline, enter some seed data.
