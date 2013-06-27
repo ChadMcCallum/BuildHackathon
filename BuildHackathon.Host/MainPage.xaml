@@ -13,12 +13,15 @@
 		<common:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
 	</Page.Resources>
 
-	<Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="30">
+	<Grid>
+		<Grid.Background>
+			<ImageBrush ImageSource="Images/Background.png" Stretch="Fill" />
+		</Grid.Background>
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="30" Background="Transparent">
 			<TextBlock x:Name="pageMain" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
-			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,100,0,0">
-				<Button x:Name="btnStartGame" Content="Start Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="335" Width="534" Tapped="btnStartGame_Tapped"/>
-				<StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="50,0,0,0">
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,100,0,0" Background="Transparent">
+				<Button x:Name="btnStartGame" Content="Start Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="335" Width="534" Tapped="btnStartGame_Tapped" Margin="50,0,0,0" />
+				<StackPanel Orientation="Vertical" Margin="750,0,0,0">
 					<TextBlock Text="Game Options" Foreground="White" FontSize="30" />
 					<Border BorderBrush="White" BorderThickness="1" HorizontalAlignment="Left" Height="290" Width="500" VerticalAlignment="Center">
 						<StackPanel Orientation="Vertical" Margin="10">
@@ -47,8 +50,8 @@
 					</Border>
 				</StackPanel>
 			</StackPanel>
-			<TextBlock x:Name="txtErrorMessage" Text="An error occurred" FontSize="22" Foreground="Red" HorizontalAlignment="Center" Margin="0,20,0,0" />
-			<Button x:Name="btnEndGame" Content="End Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="300" Margin="0,60,0,0" Tapped="btnEndGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+			<TextBlock x:Name="txtErrorMessage" Text="An error occurred" FontSize="22" Foreground="Red" FontWeight="Bold" HorizontalAlignment="Left" Margin="100,20,0,0" />
+			<Button x:Name="btnEndGame" Content="End Game" FontSize="50" HorizontalAlignment="Left" VerticalAlignment="Center" Height="200" Width="300" Margin="60,220,0,0" Tapped="btnEndGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
 		</StackPanel>
 	</Grid>
 </Page>

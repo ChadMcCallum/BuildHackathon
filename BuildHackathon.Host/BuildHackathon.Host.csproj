@@ -136,6 +136,7 @@
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Common\ReadMe.txt" />
+    <Content Include="Images\Background.png" />
     <Content Include="Images\TweetBubble.png" />
     <Content Include="Images\TwitterLogo.png" />
   </ItemGroup>

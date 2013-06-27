@@ -20,6 +20,10 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Style="{StaticResource LayoutRootStyle}">
+		<Grid.Background>
+			<ImageBrush ImageSource="Images/Background.png" Stretch="Fill" />
+		</Grid.Background>
+		
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -42,6 +46,7 @@
 					<Grid>
 						<Image Source="Images/TweetBubble.png" Stretch="Fill" Margin="10" />
 						<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1350" Margin="110,0,0,0" Text="Waiting for players to join... Scan the QR code to join the game." />
+						<!--<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1350" Margin="110,0,0,0" Text="A really long tweet to make sure that it does not overflow outside of the boundaries and that it still looks really good with these changes" />-->
 					</Grid>
 				</StackPanel>
 				<Grid>
@@ -74,13 +79,13 @@
 							<TextBlock x:Name="txtBlueTeamScore" FontSize="60" TextAlignment="Right" HorizontalAlignment="Right" Margin="0,0,10,0" Text="0" />
 						</Grid>	
 					</StackPanel>
-					
+
 					<StackPanel x:Name="stkInfo" Grid.Column="1" Orientation="Vertical">
-						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" VerticalAlignment="Top" FontSize="32" Margin="0,100,0,10" />
+						<TextBlock x:Name="txtQrCodeLabel" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Scan QR Code To Join Game" Foreground="Black" FontWeight="Bold" VerticalAlignment="Top" FontSize="34" Margin="0,80,0,0" />
 						<Image x:Name="imgQrCode" HorizontalAlignment="Center" Width="400" Height="400" VerticalAlignment="Top" />
-						<StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center">
-							<TextBlock Text="To Win:" FontSize="50" VerticalAlignment="Center" />
-							<TextBlock x:Name="txtGoalScore" FontSize="50" VerticalAlignment="Center" Margin="20,0,0,0" Text="0" />
+						<StackPanel Orientation="Horizontal" Margin="0,70,0,0" HorizontalAlignment="Center">
+							<TextBlock Text="To Win:" FontSize="50" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" />
+							<TextBlock x:Name="txtGoalScore" FontSize="50" VerticalAlignment="Center" Margin="20,0,0,0" Foreground="Black" FontWeight="Bold" Text="0" />
 						</StackPanel>
 					</StackPanel>
 
