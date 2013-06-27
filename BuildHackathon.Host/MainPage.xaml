@@ -18,7 +18,10 @@
 			<ImageBrush ImageSource="Images/Background.png" Stretch="Fill" />
 		</Grid.Background>
 		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="30" Background="Transparent">
-			<TextBlock x:Name="pageMain" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
+			<StackPanel Orientation="Horizontal">
+				<TextBlock x:Name="pageMain" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
+				<TextBlock Text="Brought to you by Hungry Hungry Hackers" Margin="875,0,0,0" FontSize="30" VerticalAlignment="Top" />
+			</StackPanel>
 			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,100,0,0" Background="Transparent">
 				<Button x:Name="btnStartGame" Content="Start Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="335" Width="534" Tapped="btnStartGame_Tapped" Margin="50,0,0,0" />
 				<StackPanel Orientation="Vertical" Margin="750,0,0,0">
