@@ -36,10 +36,10 @@ namespace BuildHackathon.Hubs
         //host methods
         public Game CreateGame()
         {
-            var game = new Game();
-            _games.Add(new GameThread(GlobalHost.ConnectionManager.GetHubContext<GameHub>()));
+            var thread = new GameThread(GlobalHost.ConnectionManager.GetHubContext<GameHub>());
+            _games.Add(thread);
 
-            return game;
+            return thread.Game;
         }
 
         //client methods
@@ -56,12 +56,20 @@ namespace BuildHackathon.Hubs
             if (game != null)
             {
                 var player = new Player(Context.ConnectionId) { Name = name };
+                _players.Add(player);
                 game.AddPlayer(player);
-                if (game.Game.TotalPlayers > 2) 
+                if (game.Game.TotalPlayers >= 2 && !game.IsStarted) 
                     game.Start();
                 return player.Team.Name;
             }
             throw new Exception("Game doesn't exist");
+        }
+
+        public void Guess(string name)
+        {
+            var player = _players.FirstOrDefault(p => p.ConnectionID == Context.ConnectionId);
+            var gameThread = _games.FirstOrDefault(g => g.Game == player.Game);
+            gameThread.Guess(player, name);
         }
     }
 }

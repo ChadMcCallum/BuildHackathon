@@ -4,5 +4,6 @@
     {
         public string Tweet { get; set; }
         public Player[] PlayerOptions { get; set; }
+        public string RightAnswer { get; set; }
     }
 }

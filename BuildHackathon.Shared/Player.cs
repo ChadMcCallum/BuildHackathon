@@ -4,6 +4,11 @@ namespace BuildHackathon.Shared
 {
     public class Player
     {
+        public Player()
+        {
+            
+        }
+
         public Player(string connectionId)
         {
             this.ConnectionID = connectionId;
@@ -17,6 +22,8 @@ namespace BuildHackathon.Shared
         
         [JsonIgnore]
         public Team Team { get; set; }
+        [JsonIgnore]
+        public Game Game { get; set; }
 
 		public int Score { get; set; }
     }

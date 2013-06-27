@@ -29,3 +29,24 @@ received: UpdateScore
 
 phone client
 ------------
+Sent: JoinGame
+	{ Guid gameID, string name }
+	return: string Team
+	
+Received: NewQuestion
+	Question: { string Tweet,
+		[
+			{ string Name, string ImageURL },
+			{ string Name, string ImageURL },
+		]
+	}
+
+Sent: Guess
+	string Name
+	no return
+	
+Received: Result
+	{ string Name, string ImageURL, string result, int yourScore, int teamScore }
+	
+Received: EndOfRound
+	no data
