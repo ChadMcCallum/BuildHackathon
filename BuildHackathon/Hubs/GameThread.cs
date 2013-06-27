@@ -49,8 +49,33 @@ namespace BuildHackathon.Hubs
             GetNewQuestion(null);
         }
 
+        private void NewGame(object obj)
+        {
+            //reset scores
+            foreach (var player in Game.RedTeam.Players.Concat(Game.BlueTeam.Players))
+            {
+                player.Score = 0;
+            }
+            Game.RedTeam.Score = 0;
+            Game.BlueTeam.Score = 0;
+
+            _hub.Clients.Client(Host).UpdateScore(new[] { Game.RedTeam, Game.BlueTeam });
+            _hub.Clients.Group(Game.ID).ResetScore();
+            if(Game.TotalPlayers > 1)
+                GetNewQuestion(null);
+            else
+            {
+                this.IsStarted = false;
+                _hub.Clients.Group(Game.ID).Wait();
+            }
+        }
+
         private void GetNewQuestion(object obj)
         {
+            if (CheckForWinner())
+            {
+                return;
+            }
             var options = GetPlayerOptions();
             Player user = null;
             IEnumerable<TwitterStatus> tweets = null;
@@ -79,6 +104,27 @@ namespace BuildHackathon.Hubs
             _hub.Clients.Client(Host).NewQuestion(question);
             //have 15 seconds to answer
             this._currentQuestionTimer = new Timer(QuestionTimeout, null, 20000, Timeout.Infinite);
+        }
+
+        private bool CheckForWinner()
+        {
+            var goal = (Game.TotalPlayers/2);// *5 * 100;
+            var goalIsPassed = Game.RedTeam.Score >= goal || Game.BlueTeam.Score >= goal;
+            if (goalIsPassed && Game.RedTeam.Score > Game.BlueTeam.Score)
+            {
+                _hub.Clients.Client(Host).EndGame("The Red Team Won!");
+                _hub.Clients.Group(Game.ID).EndGame("The Red Team Won!");
+                _currentQuestionTimer = new Timer(NewGame, null, 30000, Timeout.Infinite);
+                return true;
+            }
+            else if (goalIsPassed && Game.BlueTeam.Score > Game.RedTeam.Score)
+            {
+                _hub.Clients.Client(Host).EndGame("The Blue Team Won!");
+                _hub.Clients.Group(Game.ID).EndGame("The Blue Team Won!");
+                _currentQuestionTimer = new Timer(NewGame, null, 30000, Timeout.Infinite);
+                return true;
+            }
+            return false;
         }
 
         private List<Player> GetPlayerOptions()
@@ -117,13 +163,8 @@ namespace BuildHackathon.Hubs
                 }
                 else if (playerGuess != null)
                 {
-                    player.Team.Score -= 10;
-                    player.Score -= 10;
-                }
-                else
-                {
-                    player.Team.Score -= 5;
-                    player.Score -= 5;
+                    player.Team.Score -= 25;
+                    player.Score -= 25;
                 }
                 if (player.Team.Score < 0)
                 {
@@ -191,7 +232,7 @@ namespace BuildHackathon.Hubs
 
         public void EndGame()
         {
-            _hub.Clients.Group(this.Game.ID).EndGame("Not enough players");
+            _hub.Clients.Group(this.Game.ID).Wait();
             _hub.Clients.Client(Host).EndGame("More players needed");
             if (this._currentQuestionTimer != null)
             {

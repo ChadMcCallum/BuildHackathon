@@ -48,8 +48,11 @@ namespace BuildHackathon.Hubs
             var thread = new GameThread(GlobalHost.ConnectionManager.GetHubContext<GameHub>());
             _games.Add(thread);
             thread.Game.Type = (GameType)type;
-            thread.Game.SetCelebs(celebs);
-            thread.InitCelebreties();
+            if (thread.Game.Type != GameType.PlayersOnly)
+            {
+                thread.Game.SetCelebs(celebs);
+                thread.InitCelebreties();
+            }
             thread.Host = Context.ConnectionId;
 
             return thread.Game;

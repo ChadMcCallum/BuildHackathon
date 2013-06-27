@@ -29,6 +29,9 @@ $().ready(function () {
         
         $.mobile.changePage($('#guess'), { changeHash: false });
     };
+    hubProxy.client.Wait = function() {
+        $.mobile.changePage($('#wait-round'), { changeHash: false });
+    };
     hubProxy.client.Timeout = function (args) {
         updateResult(args);
         $.mobile.changePage($('#timeout'), { changeHash: false });
@@ -44,6 +47,9 @@ $().ready(function () {
     hubProxy.client.EndGame = function (msg) {
         $('#game-over-message').html("<p>" + msg + "</p>");
         $.mobile.changePage($('#gameover'), { changeHash: false });
+    };
+    hubProxy.client.ResetScore = function() {
+        $("[data-role=footer]").html("<p style='text-align: right; padding-right: 10px;'>Your Score: 0 - Team Score: 0</p>");
     };
 
     $.connection.hub.start().done(function () {

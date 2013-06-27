@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>My Page</title>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0," />
     <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />-->
     <link rel="stylesheet" href="www/css/metro/jquery.mobile.metro.theme.css" />
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
@@ -17,12 +17,12 @@
         }
 
         [data-role=page] {
-            height: 90% !important;
+            height: 100% !important;
             position: relative !important;
         }
 
         [data-role=content] {
-            height: 80% !important;
+            height: 100% !important;
             position: relative !important;
             color: white;
         }
@@ -72,7 +72,7 @@
         <div data-role="content">
             <p style="color: black;">Enter your twitter handle:</p>
             <input type='text' id='twitterName' /><br/><br />
-            <button id='start-playing'>Start Playing!</button>
+            <button id='start-playing'>Join Game</button>
         </div>
         <!-- /content -->
         <div data-role="footer" class="footer" data-position="fixed">
@@ -86,8 +86,9 @@
         </div>
         <!-- /header -->
 
-        <div data-role="content">
-            <p>Waiting for next round to start...</p>
+        <div data-role="content" style="text-align: center;">
+            <img src="images/others.png"/>
+            <h3 style="text-align: center;">waiting for more players...</h3>
         </div>
         <!-- /content -->
         <div data-role="footer" class="footer" data-position="fixed">
@@ -109,8 +110,9 @@
         <div data-role="header">
             <h1>Who Tweet Dat?</h1>
         </div>
-        <div data-role="content">
-            <p>Waiting for everyone else...</p>
+        <div data-role="content" style="text-align: center;">
+            <img src="images/waiting.png" />
+            <h3 style="text-align: center;">waiting for other players...</h3>
         </div>
         <div data-role="footer" class="footer" data-position="fixed">
         </div>

@@ -179,7 +179,6 @@ namespace BuildHackathon.Host
 					txtRedTeamScore.Text = team.Score.ToString();
 				}
 			}
-
             
 //InsertTestData();
 
