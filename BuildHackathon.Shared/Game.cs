@@ -22,10 +22,10 @@ namespace BuildHackathon.Shared
         public Game(string id)
         {
             this.ID = id;
-            this.QRCodeImage = string.Format("http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={0}&chld=H|0)",
+            this.QRCodeImage = string.Format("http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={0}",
                                  Uri.EscapeDataString(
                                      "http://buildhackathon.cloudapp.net/client.html?id=" +
-                                     this.ID.ToString()));
+                                     this.ID));
             BlueTeam = new Team() { Name = "Blue" };
             RedTeam = new Team() { Name = "Red" };
             
@@ -65,5 +65,18 @@ namespace BuildHackathon.Shared
 
         public Question Question { get; set; }
 
+        public GameType Type { get; set; }
+
+        public void SetCelebs(string[] celebs)
+        {
+            Celebrities = celebs.Select(c => new Player() {Name = c}).ToList();
+        }
+    }
+
+    public enum GameType
+    {
+        PlayersOnly = 1,
+        CelebsOnly = 2,
+        PlayersAndCelebs = 3
     }
 }

@@ -32,6 +32,7 @@ namespace BuildHackathon.Hubs
                 var thread = _games.FirstOrDefault(p => p.Game.ID == player.Game.ID);
                 if (thread != null)
                 {
+                    thread.RemovePlayer(player);
                     if (thread.Game.TotalPlayers < 2)
                     {
                         thread.EndGame();
@@ -42,12 +43,23 @@ namespace BuildHackathon.Hubs
         }
 
         //host methods
-        public Game CreateGame()
+        public Game CreateGame(int type, string[] celebs)
         {
             var thread = new GameThread(GlobalHost.ConnectionManager.GetHubContext<GameHub>());
             _games.Add(thread);
+            thread.Game.Type = (GameType)type;
+            thread.Game.SetCelebs(celebs);
+            thread.InitCelebreties();
+            thread.Host = Context.ConnectionId;
 
             return thread.Game;
+        }
+
+        public void CancelGame()
+        {
+            var id = Context.ConnectionId;
+            var gamethread = _games.FirstOrDefault(g => g.Host == id);
+            gamethread.CancelGame();
         }
 
         //client methods
@@ -57,7 +69,12 @@ namespace BuildHackathon.Hubs
             //take this out later
             if (game == null)
             {
-                var gamestate = CreateGame();
+                var gamestate = CreateGame(3,
+                                           new[]
+                                               {
+                                                   "shanselman", "scottgu", "codinghorror", "drunkhulk", "depresseddarth",
+                                                   "shitmydadsays"
+                                               });
                 gamestate.ID = id;
                 game = _games.First();
             }

@@ -1,6 +1,13 @@
-﻿$().ready(function () {
+﻿$(document).bind("mobileinit", function () {
+    $.mobile.defaultPageTransition = 'turn';
+});
+
+$().ready(function () {
     window.hubProxy = $.connection.gameHub;
     window.buttonTemplate = _.template($('#button-template').html());
+    window.onbeforeunload = function() {
+        $.connection.hub.stop();
+    };
 
     //client methods
     hubProxy.client.NewQuestion = function (question) {
@@ -20,20 +27,23 @@
         });
         $('#buttons').trigger('create');
         
-        $.mobile.changePage($('#guess'));
+        $.mobile.changePage($('#guess'), { changeHash: false });
     };
-    hubProxy.client.Timeout = function() {
-        $.mobile.changePage($('#timeout'));
+    hubProxy.client.Timeout = function (args) {
+        updateResult(args);
+        $.mobile.changePage($('#timeout'), { changeHash: false });
     };
-    hubProxy.client.Right = function() {
-        $.mobile.changePage($('#correct'));
+    hubProxy.client.Right = function (args) {
+        updateResult(args);
+        $.mobile.changePage($('#correct'), { changeHash: false });
     };
-    hubProxy.client.Wrong = function() {
-        $.mobile.changePage($('#fail'));
+    hubProxy.client.Wrong = function (args) {
+        updateResult(args);
+        $.mobile.changePage($('#fail'), { changeHash: false });
     };
     hubProxy.client.EndGame = function (msg) {
         $('#game-over-message').html("<p>" + msg + "</p>");
-        $.mobile.changePage($('#gameover'));
+        $.mobile.changePage($('#gameover'), { changeHash: false });
     };
 
     $.connection.hub.start().done(function () {
@@ -47,21 +57,46 @@
     $(document).on('click', '.guess', function () {
         var nameOfGuess = this.id;
         hubProxy.server.guess(nameOfGuess).done(function() {
-            $.mobile.changePage($('#waiting'));
+            $.mobile.changePage($('#waiting'), { changeHash: false });
         });
         
-        $.mobile.changePage($('#waiting'));
+        $.mobile.changePage($('#waiting'), { changeHash: false });
     });
 });
 
+function updateResult(args) {
+    $('.actual > img').attr('src', args.Actual.ImageURL);
+    $('.actual > .name').html(args.Actual.Name);
+    $("[data-role=footer]").html("<p style='text-align: right; padding-right: 10px;'>Your Score: " + args.MyScore + " - Team Score: " + args.TeamScore + "</p>");
+
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 function JoinGame() {
-    hubProxy.server.joinGame("E2865CED-1543-430D-BF43-2D5F56E5FE16", $('#twitterName').val()).done(function (team) {
+    var gameID = getParameterByName("id");
+    hubProxy.server.joinGame(gameID, $('#twitterName').val()).done(function (team) {
         if (team == "Red") {
             //set background to red
             $('[data-role=content]').css('background-color', '#E86850');
         } else {
             $('[data-role=content]').css('background-color', '#587498');
         }
-        $.mobile.changePage($('#wait-round'));
+        $.mobile.changePage($('#wait-round'), { changeHash: false });
     }).fail(function (e) { alert(e); });
 }
+
+//function layoutPage() {
+//    var width = $(window).width();
+//    if (width < 480) {
+//        //vertical layout
+//        $('#buttons')
+//    } else {
+//        //horizontal layout
+//    }
+//}

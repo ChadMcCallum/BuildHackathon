@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>My Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
     <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />-->
     <link rel="stylesheet" href="www/css/metro/jquery.mobile.metro.theme.css" />
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
@@ -22,7 +22,7 @@
         }
 
         [data-role=content] {
-            height: 80% !important;
+            height: 85% !important;
             position: relative !important;
             color: white;
         }
@@ -32,6 +32,27 @@
             position: absolute !important;
             top: auto !important;
             width: 100%;
+        }
+
+        .ui-header .ui-title {
+            margin: 5px;
+        }
+
+        .ui-footer {
+            padding-left: 5px;
+        }
+
+        .ui-btn {
+            margin: 2px;
+            min-height: 40px;
+        }
+
+        .ui-btn-inner {
+            padding: 10px;
+        }
+
+        body {
+            background-color: black !important;
         }
     </style>
 </head>
@@ -46,7 +67,7 @@
 
         <div data-role="content">
             <p style="color: black;">Enter your twitter handle:</p>
-            <input type='text' id='twitterName' />
+            <input type='text' id='twitterName' /><br/><br />
             <button id='start-playing'>Start Playing!</button>
         </div>
         <!-- /content -->
@@ -94,8 +115,14 @@
         <div data-role="header">
             <h1>Who Tweet Dat?</h1>
         </div>
-        <div data-role="content">
-            <p>YOU WERE RIGHT!!!</p>
+        <div data-role="content" style="text-align: center;">
+            <img src="images/ok.png"/>
+            <div style="text-align: center;">
+                <h3 style="text-align: center;">correct</h3>
+                <div class="actual">
+                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                </div>
+            </div>
         </div>
         <div data-role="footer" class="footer" data-position="fixed">
         </div>
@@ -105,8 +132,14 @@
         <div data-role="header">
             <h1>Who Tweet Dat?</h1>
         </div>
-        <div data-role="content">
-            <p>FAIL.</p>
+        <div data-role="content" style="text-align: center;">
+            <img src="images/cancel.png"/>
+            <div style="text-align: center;">
+                <h3 style="text-align: center;">incorrect</h3>
+                <div class="actual">
+                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                </div>
+            </div>
         </div>
         <div data-role="footer" class="footer" data-position="fixed">
         </div>
@@ -116,8 +149,14 @@
         <div data-role="header">
             <h1>Who Tweet Dat?</h1>
         </div>
-        <div data-role="content">
-            <p>Oops, ran out of time.</p>
+        <div data-role="content" style="text-align: center;">
+            <img src="images/miss.png"/>
+            <div style="text-align: center;">
+                <h3 style="text-align: center;">out of time</h3>
+                <div class="actual">
+                    <img style="vertical-align: middle;" /> <span class="name"></span>
+                </div>
+            </div>
         </div>
         <div data-role="footer" class="footer" data-position="fixed">
         </div>
@@ -138,7 +177,7 @@
     <script type="text/underscore-template" id="button-template">
         <div class="ui-block-a">
             <button class='guess' id='<%= Name %>'>
-                <img src="<%= ImageURL %>" style="width: 75px; vertical-align: middle;" />
+                <img src="<%= ImageURL %>" style="width: 60px;" /><br />
                 <%= Name %>
             </button>
         </div>

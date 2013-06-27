@@ -23,11 +23,9 @@ namespace BuildHackathon.Hubs
             this.Game = new Game(Guid.NewGuid().ToString());
             _service = new TwitterService("vCBYBvYAdRrgWs5z0zmD1A", "eHqhut7IVR4aUWlgBwuURl3QssL7ASf7hNIi3AovjY");
             _service.AuthenticateWith("68329856-dHYH7dgh85Qkiv7vaNjoScNDTngJtNrjdH8JCLcvt", "KFtWesqC94jxkgSVYrpMlg4IKIcitmJF7MQW0b5Q");
-
-            InitCelebreties();
         }
 
-        private void InitCelebreties()
+        public void InitCelebreties()
         {
             foreach (var celeb in Game.Celebrities)
             {
@@ -42,6 +40,8 @@ namespace BuildHackathon.Hubs
         public Game Game { get; set; }
 
         public bool IsStarted { get; set; }
+
+        public string Host { get; set; }
 
         public void Start()
         {
@@ -68,37 +68,54 @@ namespace BuildHackathon.Hubs
             SetPlayerOptions(question, user);
             this.Game.SetQuestion(question);
             _hub.Clients.Group(Game.ID).NewQuestion(question);
+            _hub.Clients.Client(Host).NewQuestion(question);
             //have 15 seconds to answer
             this._currentQuestionTimer = new Timer(QuestionTimeout, null, 15000, Timeout.Infinite);
         }
 
-        private bool useCelebrity = true;
         private Player GetRandomUser()
         {
-            if (useCelebrity)
+            if (this.Game.Type == GameType.CelebsOnly)
             {
-                useCelebrity = false;
                 return Game.Celebrities.OrderBy(x => _random.Next()).First();
+            }
+            else if(this.Game.Type == GameType.PlayersOnly)
+            {
+                return Game.RedTeam.Players.Concat(Game.BlueTeam.Players).OrderBy(x => _random.Next()).First();
             }
             else
             {
-                useCelebrity = true;
-                return Game.RedTeam.Players.Concat(Game.BlueTeam.Players).OrderBy(x => _random.Next()).First();
+                return Game.Celebrities.Concat(Game.RedTeam.Players)
+                    .Concat(Game.BlueTeam.Players)
+                    .OrderBy(x => _random.Next())
+                    .First();
             }
         }
 
         private void SetPlayerOptions(Question question, Player user)
         {
             var list = new List<Player>();
-            var celebCount = 6 - Game.TotalPlayers;
-            if (celebCount < 3) celebCount = 3;
-            list.AddRange(Game.Celebrities.OrderBy(x => _random.Next()).Take(celebCount));
-            list.AddRange(Game.RedTeam.Players.Concat(Game.BlueTeam.Players).OrderBy(x => _random.Next()).Take(6 - celebCount));
+            if (this.Game.Type == GameType.CelebsOnly)
+            {
+                list.AddRange(Game.Celebrities.OrderBy(x => _random.Next()).Take(6));
+            }
+            else if (this.Game.Type == GameType.PlayersOnly)
+            {
+                list.AddRange(Game.RedTeam.Players.Concat(Game.BlueTeam.Players).OrderBy(x => _random.Next()).Take(6));
+            }
+            else
+            {
+                list.AddRange(
+                    Game.Celebrities.Concat(Game.BlueTeam.Players)
+                        .Concat(Game.RedTeam.Players)
+                        .OrderBy(x => _random.Next())
+                        .Take(6));
+            }
             if (list.All(p => p.Name != user.Name))
                 SetPlayerOptions(question, user);
             else
             {
-                question.PlayerOptions = list.OrderBy(o => _random.Next()).ToArray();
+                question.PlayerOptions = list.ToArray();
             }
         }
 
@@ -109,22 +126,35 @@ namespace BuildHackathon.Hubs
             foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
             {
                 var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
+                if (playerGuess != null && playerGuess.Name == this.Game.Question.RightAnswer)
+                {
+                    player.Team.Score += 100;
+                    player.Score += 100;
+                }
+            }
+            var rightPlayer = this.Game.Question.PlayerOptions.Single(p => p.Name.ToLower() == this.Game.Question.RightAnswer.ToLower());
+            foreach (var player in this.Game.RedTeam.Players.Concat(this.Game.BlueTeam.Players))
+            {
+                var playerGuess = this.Game.Guesses.FirstOrDefault(p => p.Player.ConnectionID == player.ConnectionID);
+                var result = new {MyScore = player.Score, TeamScore = player.Team.Score, Actual = rightPlayer};
                 if (playerGuess == null)
                 {
                     //timeout
-                    _hub.Clients.Client(player.ConnectionID).Timeout(message);
+                    _hub.Clients.Client(player.ConnectionID).Timeout(result);
                 }
                 else if (playerGuess.Name != this.Game.Question.RightAnswer)
                 {
                     //wrong
-                    _hub.Clients.Client(player.ConnectionID).Wrong(message);
+                    _hub.Clients.Client(player.ConnectionID).Wrong(result);
                 }
                 else
                 {
                     //right
-                    _hub.Clients.Client(player.ConnectionID).Right(message);
+                    _hub.Clients.Client(player.ConnectionID).Right(result);
                 }
             }
+            //update scores
+            _hub.Clients.Client(Host).UpdateScore(new [] {Game.RedTeam, Game.BlueTeam});
 
             //set timer to next question
             _currentQuestionTimer = new Timer(GetNewQuestion, null, 5000, Timeout.Infinite);
@@ -140,6 +170,7 @@ namespace BuildHackathon.Hubs
                 player.Game = this.Game;
                 this.Game.AddPlayerToTeam(player);
                 _hub.Groups.Add(player.ConnectionID, Game.ID);
+                _hub.Clients.Client(Host).NewPlayer(new [] { Game.RedTeam, Game.BlueTeam });
             }
             else
             {
@@ -159,6 +190,23 @@ namespace BuildHackathon.Hubs
         public void EndGame()
         {
             _hub.Clients.Group(this.Game.ID).EndGame("Not enough players");
+            _hub.Clients.Client(Host).EndGame("More players needed");
+            if (this._currentQuestionTimer != null)
+            {
+                this._currentQuestionTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                this._currentQuestionTimer = null;
+            }
+            this.IsStarted = false;
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            _hub.Clients.Client(Host).RemovePlayer(new[] { this.Game.RedTeam, this.Game.BlueTeam});
+        }
+
+        public void CancelGame()
+        {
+            _hub.Clients.Group(Game.ID).EndGame("Host app closed");
             if (this._currentQuestionTimer != null)
             {
                 this._currentQuestionTimer.Change(Timeout.Infinite, Timeout.Infinite);
