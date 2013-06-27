@@ -13,10 +13,41 @@
 		<common:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
 	</Page.Resources>
 
-	<Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-		<TextBlock x:Name="pageMain" Margin="30,30,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
-		<Button x:Name="btnStartGame" Content="Start Game" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,200" Height="335" Width="534" Tapped="btnStartGame_Tapped"/>
-		<Button x:Name="btnEndGame" Content="End Game" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="200" Width="300" Margin="0,0,0,100" Tapped="btnEndGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
-
+	<Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="20">
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+			<TextBlock x:Name="pageMain" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{StaticResource AppName}" VerticalAlignment="Top" Style="{StaticResource PageHeaderTextStyle}" />
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,100,0,0">
+				<Button x:Name="btnStartGame" Content="Start Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="335" Width="534" Tapped="btnStartGame_Tapped"/>
+				<StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="50,0,0,0">
+					<TextBlock Text="Game Options" Foreground="White" FontSize="30" />
+					<Border BorderBrush="White" BorderThickness="1" HorizontalAlignment="Left" Height="290" Width="500" VerticalAlignment="Center">
+						<StackPanel Orientation="Vertical" Margin="10">
+							<TextBlock Text="Pull Tweets From:" FontSize="20" />
+							<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+								<RadioButton x:Name="radioUsersOnly" Content="Players Only" GroupName="FeedsToPullTweetsFrom" VerticalAlignment="Stretch" Margin="10,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+								<RadioButton x:Name="radioCustomOnly" Content="Custom Only" GroupName="FeedsToPullTweetsFrom" VerticalAlignment="Stretch" Margin="30,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+								<RadioButton x:Name="radioUsersAndCustom" Content="Players and Custom" GroupName="FeedsToPullTweetsFrom" VerticalAlignment="Stretch" Margin="30,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+							</StackPanel>
+							<TextBlock Text="Custom Twitter Accounts To Pull Tweets From:" FontSize="20" Margin="0,30,0,0" />
+							<StackPanel Orientation="Vertical" Margin="10,0,0,0">
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBox x:Name="txtCustom1" Width="200" IsEnabled="{Binding Path=GameIsNull}" />
+									<TextBox x:Name="txtCustom2" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+								</StackPanel>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBox x:Name="txtCustom3" Width="200" IsEnabled="{Binding Path=GameIsNull}" />
+									<TextBox x:Name="txtCustom4" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+								</StackPanel>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBox x:Name="txtCustom5" Width="200" IsEnabled="{Binding Path=GameIsNull}" />
+									<TextBox x:Name="txtCustom6" Width="200" Margin="50,0,0,0" IsEnabled="{Binding Path=GameIsNull}" />
+								</StackPanel>
+							</StackPanel>
+						</StackPanel>
+					</Border>
+				</StackPanel>
+			</StackPanel>
+			<Button x:Name="btnEndGame" Content="End Game" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="300" Margin="0,100,0,0" Tapped="btnEndGame_Tapped" Visibility="{Binding Path=GameIsNull, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+		</StackPanel>
 	</Grid>
 </Page>

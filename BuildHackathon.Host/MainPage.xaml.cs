@@ -70,6 +70,22 @@ namespace BuildHackathon.Host
 
 		private async void btnStartGame_Tapped(object sender, RoutedEventArgs e)
 		{
+			var customAccounts = new List<string>();
+			if (!radioUsersOnly.IsChecked.Value)
+			{
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+				AddValidTwitterHandleToList(ref customAccounts, txtCustom1.Text);
+
+				if (customAccounts.Count < 2)
+				{
+					btnStartGame.Content = "At Least 2 Accounts Required";
+				}
+			}
+
 			// Don't allow them to click again while we process.
 			btnStartGame.IsEnabled = false;
 
@@ -126,6 +142,13 @@ namespace BuildHackathon.Host
 			GameData.Game = null;
 			GameData.HubProxy = null;
 			UpdateUI();
+		}
+
+		private void AddValidTwitterHandleToList(ref List<string> list, string handle)
+		{
+			handle = handle.Trim();
+			if (!string.IsNullOrWhiteSpace(handle))
+				list.Add(handle);
 		}
     }
 }
