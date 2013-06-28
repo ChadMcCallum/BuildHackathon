@@ -200,7 +200,27 @@ namespace BuildHackathon.Host
 			// Allow people to join the game.
 			imgQrCode.Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(GameData.Game.QRCodeImage, UriKind.Absolute));
 
-			UpdateTeams(new Team[] { GameData.Game.BlueTeam, GameData.Game.RedTeam });
+			Team blueTeam = new Team();
+			Team redTeam = new Team();
+
+			blueTeam.Name = GameData.Game.BlueTeam.Name;
+			blueTeam.Score = GameData.Game.BlueTeam.Score;
+			foreach (var player in GameData.Game.BlueTeam.Players)
+			{
+				blueTeam.AddPlayer(player);
+			}
+
+			redTeam.Name = GameData.Game.RedTeam.Name;
+			redTeam.Score = GameData.Game.RedTeam.Score;
+			foreach (var player in GameData.Game.RedTeam.Players)
+			{
+				redTeam.AddPlayer(player);
+			}
+
+			UpdateTeams(new Team[] { blueTeam, redTeam });
+
+			if (!string.IsNullOrWhiteSpace(GameData.Tweet))
+				txtTweet.Text = GameData.Tweet;
 		}
 
 		private void InsertTestData()

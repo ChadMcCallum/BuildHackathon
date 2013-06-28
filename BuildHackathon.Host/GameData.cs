@@ -30,5 +30,7 @@ namespace BuildHackathon.Host
 				}
 			}
 		}
+
+		public static string Tweet { get; set; }
 	}
 }

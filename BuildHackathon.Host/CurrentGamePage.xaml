@@ -46,7 +46,7 @@
 					<Image Source="Images/TwitterLogo.png" Width="150" />
 					<Grid>
 						<Image Source="Images/TweetBubble.png" Stretch="Fill" Margin="10" />
-						<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1350" Margin="110,0,0,0" Text="Waiting for players to join... Scan the QR code to join the game." />
+						<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1330" Margin="110,0,0,0" Text="Waiting for players to join... Scan the QR code to join the game." />
 						<!--<TextBlock x:Name="txtTweet" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap" Height="200" Width="1350" Margin="110,0,0,0" Text="A really long tweet to make sure that it does not overflow outside of the boundaries and that it still looks really good with these changes" />-->
 					</Grid>
 				</StackPanel>
