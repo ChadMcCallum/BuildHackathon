@@ -92,6 +92,7 @@ namespace BuildHackathon.Hubs
                 else if(!game.IsStarted)
                 {
                     Clients.Group(game.Game.ID).Wait();
+                    Clients.Client(Context.ConnectionId).Wait();
                 }
                 else if (game.IsStarted)
                 {

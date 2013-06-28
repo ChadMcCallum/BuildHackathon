@@ -109,7 +109,7 @@ namespace BuildHackathon.Hubs
 
         private bool CheckForWinner()
         {
-            var goal = (Game.TotalPlayers / 2) *5 * 100;
+            var goal = Math.Round((Game.TotalPlayers / 2.0) * 5 * 100);
             var goalIsPassed = Game.RedTeam.Score >= goal || Game.BlueTeam.Score >= goal;
             if (goalIsPassed && Game.RedTeam.Score > Game.BlueTeam.Score)
             {

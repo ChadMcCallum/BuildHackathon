@@ -59,6 +59,9 @@ $().ready(function () {
         } else {
             $('#win').hide();
             $('#lose').hide();
+            if (msg.indexOf("Host") >= 0) {
+                $('#starting').hide();
+            }
         }
         $('#game-over-message').html(msg);
         $.mobile.changePage($('#gameover'), { changeHash: false });
